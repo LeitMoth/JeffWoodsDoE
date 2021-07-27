@@ -1,23 +1,28 @@
 plugins {
-    id 'com.github.johnrengelman.shadow' version '5.2.0'
-    id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
+    id 'java-library'
 }
 
-group 'org.example'
-version '1.0-SNAPSHOT'
+//group 'org.example'
+//version '1.0-SNAPSHOT'
 
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+jar {
+    manifest {
+        attributes "Main-Class": "JeffWoods"
+    }
 }
 
 project.ext.lwjglVersion = "3.2.3"
 project.ext.lwjglNatives = "natives-windows"
+
+project.ext.jomlVersion = "1.10.0"
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots/"
+    }
+}
 
 dependencies {
     implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
@@ -92,12 +97,6 @@ dependencies {
     runtimeOnly "org.lwjgl:lwjgl-xxhash::$lwjglNatives"
     runtimeOnly "org.lwjgl:lwjgl-yoga::$lwjglNatives"
     runtimeOnly "org.lwjgl:lwjgl-zstd::$lwjglNatives"
-    implementation 'org.jetbrains:annotations:15.0'
-}
 
-
-jar {
-    manifest {
-        attributes 'Main-Class': 'JeffWoods'
-    }
+    implementation "org.joml:joml:${jomlVersion}"
 }
