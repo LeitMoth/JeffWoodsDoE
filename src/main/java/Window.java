@@ -13,8 +13,9 @@ import static org.lwjgl.opengl.GL33.*;
 public class Window {
 
     private long window;
+    
 
-    public Window()
+    public Window(String name,int height, int width) //Cuz im commenting all changes i make: Added a var initalize to make windows more ajustable
     {
         // Setup an error callback. The default implementation
         // will print the error message in System.err.
@@ -36,7 +37,8 @@ public class Window {
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
 
         // Create the window
-        window = glfwCreateWindow(300, 300, "Hello World!", NULL, NULL);
+        //Changed window creation to take vars instead of manual input.
+        window = glfwCreateWindow(height,width,name, NULL, NULL);
         if ( window == NULL )
             throw new RuntimeException("Failed to create the GLFW window");
 

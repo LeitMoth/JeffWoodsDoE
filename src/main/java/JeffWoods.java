@@ -2,7 +2,16 @@ import org.lwjgl.opengl.GL;
 
 import static org.lwjgl.opengl.GL33.*;
 
+
 public class JeffWoods {
+	//A State detecting if the game is in the menu or in the game.
+	private enum GAMESTATE{
+		Menu,
+		Game
+	};
+	private GAMESTATE state = GAMESTATE.Menu;
+	private GameMenu menu;
+	
     public static void main(String[] args) {
         new JeffWoods().run();
     }
@@ -10,6 +19,7 @@ public class JeffWoods {
     private Window window;
 
     /*temp*/ Sprite sprite;
+    /*Also temp*/ Sprite backgroundSprite;
 
     private void run()
     {
@@ -42,21 +52,28 @@ public class JeffWoods {
     private void init()
     {
         ResourceStore.init();
-
-        window = new Window();
-
+ //Changed window class so that we can edit height & width from inside the main function instead of opening the window function every time.
+        window = new Window("Jeff Woods: Destroyer of evil", 400,400); 
+        menu = new GameMenu();
+        
         GL.createCapabilities();
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         glEnable(GL_DEPTH_TEST);
+    
 
         window.manualSetAspect();
+        
 
         sprite = new Sprite(
                 ResourceStore.getTexture("/vem.png"),
                 ResourceStore.getShader("/tex.vs.glsl", "/tex.fs.glsl")
+                
         );
 
     }
+    
+    
+    
 
     private void cleanup()
     {
@@ -74,10 +91,15 @@ public class JeffWoods {
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
+        if (state == GAMESTATE.Game) {
         sprite.draw();
 
+        } else if(state == GAMESTATE.Menu) {
+        	
+        	
+        }
         window.swapBuffers();
-
+        
         // Poll for window events. The key callback above will only be
         // invoked during this call.
         window.pollEvents();

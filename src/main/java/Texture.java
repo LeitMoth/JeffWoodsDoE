@@ -20,7 +20,7 @@ public class Texture {
             //I struggled with this for so long
             //It's a bit strange, but this is the best way I've found to load the image into a ByteBuffer
             //(ByteBuffer.wrap() does not work here for some reason)
-            byte[] bytes = getClass().getResourceAsStream(path).readAllBytes();
+            byte[] bytes = (getClass().getResourceAsStream(path)).readAllBytes();
             imageBuffer = BufferUtils.createByteBuffer(bytes.length);
             imageBuffer.put(bytes);
             imageBuffer.flip();
