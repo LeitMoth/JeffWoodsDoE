@@ -16,7 +16,7 @@ public class Window {
 
     private long window;
 
-    public Window()
+    public Window(int width, int height, String name)
     {
         // Setup an error callback. The default implementation
         // will print the error message in System.err.
@@ -38,7 +38,7 @@ public class Window {
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
 
         // Create the window
-        window = glfwCreateWindow(300, 300, "Hello World!", NULL, NULL);
+        window = glfwCreateWindow(width, height, name, NULL, NULL);
         if ( window == NULL )
             throw new RuntimeException("Failed to create the GLFW window");
 

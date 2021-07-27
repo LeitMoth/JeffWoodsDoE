@@ -1,7 +1,10 @@
 package jeffgame.gfx;
 
+import jeffgame.JeffWoods;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
+
+import static org.lwjgl.glfw.GLFW.*;
 
 public class Camera {
 
@@ -27,6 +30,42 @@ public class Camera {
         Matrix4f model = new Matrix4f();
         model.identity().translate(modelPos.x, modelPos.y, 0);
         return proj.mul(view.mul(model));
+    }
+
+    public void update(JeffWoods engine)
+    {
+        Window window = engine.getWindow();
+        float zoom_speed = 0.1f;
+        if(window.keyDown(GLFW_KEY_KP_7))
+        {
+            zoom += zoom_speed;
+        }
+        if(window.keyDown(GLFW_KEY_KP_9))
+        {
+            zoom -= zoom_speed;
+        }
+        if(window.keyDown(GLFW_KEY_KP_5))
+        {
+            zoom = 1;
+        }
+
+        float mov_speed = 1;
+        if(window.keyDown(GLFW_KEY_KP_4))
+        {
+            pos.x -= mov_speed;
+        }
+        if(window.keyDown(GLFW_KEY_KP_6))
+        {
+            pos.x += mov_speed;
+        }
+        if(window.keyDown(GLFW_KEY_KP_2))
+        {
+            pos.y -= mov_speed;
+        }
+        if(window.keyDown(GLFW_KEY_KP_8))
+        {
+            pos.y += mov_speed;
+        }
     }
 
 }
