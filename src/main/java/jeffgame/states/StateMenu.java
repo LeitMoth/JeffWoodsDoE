@@ -4,8 +4,17 @@ import jeffgame.JeffWoods;
 import jeffgame.ResourceStore;
 import jeffgame.gameobject.Sprite;
 import jeffgame.gfx.Camera;
+import jeffgame.gfx.PlayMusic;
 import jeffgame.gfx.Shader;
 import jeffgame.gfx.Texture;
+
+import javax.sound.sampled.*;
+import javax.swing.*;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
 import static org.lwjgl.opengl.GL33.*;
@@ -17,6 +26,7 @@ public class StateMenu implements IGameState {
     Sprite background, title;
     Shader menuShader;
     Texture backTex, textTex;
+    PlayMusic musicHandler = new PlayMusic();
 
     @Override
     public void init() {
@@ -34,6 +44,8 @@ public class StateMenu implements IGameState {
         background = new Sprite(cam.WIDTH,cam.HEIGHT, backTex, menuShader);
         title = new Sprite(cam.WIDTH*.95f,cam.HEIGHT*.2f, textTex, menuShader);
         title.getPosition().y += cam.HEIGHT/4;
+
+        musicHandler.PlayMusic("/menu_theme.wav");
     }
 
     @Override
@@ -57,4 +69,6 @@ public class StateMenu implements IGameState {
         background.cleanup();
         title.cleanup();
     }
+
+
 }
