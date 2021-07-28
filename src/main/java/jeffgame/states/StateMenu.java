@@ -4,17 +4,9 @@ import jeffgame.JeffWoods;
 import jeffgame.ResourceStore;
 import jeffgame.gameobject.Sprite;
 import jeffgame.gfx.Camera;
-import jeffgame.gfx.PlayMusic;
+import jeffgame.sound.PlayMusic;
 import jeffgame.gfx.Shader;
 import jeffgame.gfx.Texture;
-
-import javax.sound.sampled.*;
-import javax.swing.*;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
 import static org.lwjgl.opengl.GL33.*;
