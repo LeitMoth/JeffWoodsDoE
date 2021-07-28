@@ -18,7 +18,7 @@ public class Camera {
     public float zoom;
 
     public float zoomMax = 3f;
-    public float zoomMin = 0.5f;
+    public float zoomMin = 0.2f;
 
     public Camera() {
         pos.x = 0;
