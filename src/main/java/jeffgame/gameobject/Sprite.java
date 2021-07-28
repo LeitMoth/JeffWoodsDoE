@@ -5,6 +5,7 @@ import jeffgame.gfx.Camera;
 import jeffgame.gfx.Mesh;
 import jeffgame.gfx.Shader;
 import jeffgame.gfx.Texture;
+import jeffgame.phys.Rectangle;
 import org.joml.Vector2f;
 
 public class Sprite extends Mesh implements IGameObject {
@@ -12,7 +13,7 @@ public class Sprite extends Mesh implements IGameObject {
     private Texture texture;
     private Shader shader;
 
-    protected Vector2f size = new Vector2f(), position = new Vector2f();
+    protected Rectangle bounds = new Rectangle();
 
     float[] positions = {
             -0.5f,  0.5f,
@@ -41,15 +42,15 @@ public class Sprite extends Mesh implements IGameObject {
         texture = t;
         shader = s;
 
-        size.x = width;
-        size.y = height;
-        position.x = 0;
-        position.y = 0;
+        bounds.halfSize.x = width/2;
+        bounds.halfSize.y = height/2;
+        bounds.center.x = 0;
+        bounds.center.y = 0;
     }
 
     public Vector2f getPosition()
     {
-        return position;
+        return bounds.center;
     }
 
     @Override
@@ -64,7 +65,7 @@ public class Sprite extends Mesh implements IGameObject {
         texture.bind();
 
         shader.setUniform("texture_sampler",0);
-        shader.setUniform("MVP", c.getMVP(position));
+        shader.setUniform("MVP", c.getMVP(bounds.center));
 
         super.draw();
     }
