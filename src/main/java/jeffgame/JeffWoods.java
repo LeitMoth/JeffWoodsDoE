@@ -59,6 +59,9 @@ public class JeffWoods {
 
         long current_time = System.nanoTime();
 
+        long last_sec_time = System.nanoTime();
+        int renders = 0;
+
         while(window.isOpen())
         {
             long new_time = System.nanoTime();
@@ -69,6 +72,13 @@ public class JeffWoods {
             }
             current_time = Math.max(current_time, new_time);
 
+            if(System.nanoTime() > last_sec_time + nanos_per_update*60) {
+                System.out.println("FPS: " + renders);
+                renders =0;
+                last_sec_time = System.nanoTime();
+            }
+
+            renders++;
             render();
         }
     }

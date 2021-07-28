@@ -3,6 +3,7 @@ package jeffgame.gfx;
 import org.joml.Matrix4f;
 import org.lwjgl.system.MemoryStack;
 
+import javax.sound.sampled.spi.AudioFileReader;
 import java.io.IOException;
 
 import static org.lwjgl.opengl.GL33.*;
