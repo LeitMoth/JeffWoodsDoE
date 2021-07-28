@@ -46,7 +46,6 @@ public class JeffWoods {
 
         GL.createCapabilities();
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        glClearColor(0.00f,0.20f,0.40f, 0.0f);
 
         window.manualSetAspect();
 
@@ -75,7 +74,7 @@ public class JeffWoods {
 
             if(System.nanoTime() > last_sec_time + nanos_per_update*60) {
                 System.out.println("FPS: " + renders);
-                renders =0;
+                renders = 0;
                 last_sec_time = System.nanoTime();
             }
 
@@ -111,6 +110,5 @@ public class JeffWoods {
         // invoked during this call.
         window.pollEvents();
     }
-
 
 }

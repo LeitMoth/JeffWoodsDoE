@@ -28,16 +28,16 @@ public class StateMenu implements IGameState {
 
         cam = new Camera();
 
-        backTex = ResourceStore.getTexture("/menu_back.png");
-        textTex = ResourceStore.getTexture("/menu_text.png");
+        backTex = ResourceStore.getTexture("/texture/menu_back.png");
+        textTex = ResourceStore.getTexture("/texture/menu_text.png");
 
-        menuShader = ResourceStore.getShader("/tex.vs.glsl", "/tex.fs.glsl");
+        menuShader = ResourceStore.getShader("/shader/tex.vs.glsl", "/shader/tex.fs.glsl");
 
         background = new Sprite(cam.WIDTH,cam.HEIGHT, backTex, menuShader);
         title = new Sprite(cam.WIDTH*.95f,cam.HEIGHT*.2f, textTex, menuShader);
         title.getPosition().y += cam.HEIGHT/4;
 
-        musicHandler.PlayMusic("/menu_theme.wav");
+        musicHandler.PlayMusic("/sound/menu_theme.wav");
     }
 
     @Override

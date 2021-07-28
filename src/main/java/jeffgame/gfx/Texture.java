@@ -13,7 +13,9 @@ import static org.lwjgl.system.MemoryStack.stackPush;
 
 public class Texture {
 
-    private int textureID;
+    private final int textureID;
+
+    public final int width, height, components;
 
     public Texture(String path)
     {
@@ -36,7 +38,7 @@ public class Texture {
 
         ByteBuffer image;
 
-        int width, height, components;
+//        int width, height, components;
 
         try (MemoryStack stack = stackPush()) {
             IntBuffer w;
@@ -73,7 +75,15 @@ public class Texture {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glGenerateMipmap(GL_TEXTURE_2D);
 
+
         stbi_image_free(image);
+    }
+
+    public void makeBackground()
+    {
+        bind();
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     }
 
     public void bind()

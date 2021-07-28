@@ -70,7 +70,7 @@ public class Mesh {
         indexCount = indices.length;
     }
 
-    public void draw()
+    public void drawMesh()
     {
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);

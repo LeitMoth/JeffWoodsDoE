@@ -1,6 +1,7 @@
 package jeffgame.gfx;
 
 import org.joml.Matrix4f;
+import org.joml.Vector2f;
 import org.lwjgl.system.MemoryStack;
 
 import javax.sound.sampled.spi.AudioFileReader;
@@ -119,6 +120,12 @@ public class Shader {
             glUniformMatrix4fv(glGetUniformLocation(programID,uniformName),
                     false, value.get(stack.mallocFloat(16)));
         }
+    }
+
+    public void setUniform(String uniformName, Vector2f value)
+    {
+        glUniform2f(glGetUniformLocation(programID,uniformName),
+                value.x, value.y);
     }
 
 }

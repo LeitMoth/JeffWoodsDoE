@@ -11,7 +11,16 @@ import org.joml.Vector2f;
 public class Sprite extends Mesh implements IGameObject {
 
     private Texture texture;
+
+    public Texture getTexture() {
+        return texture;
+    }
+
     private Shader shader;
+
+    public Shader getShader() {
+        return shader;
+    }
 
     protected Rectangle bounds = new Rectangle();
 
@@ -67,7 +76,7 @@ public class Sprite extends Mesh implements IGameObject {
         shader.setUniform("texture_sampler",0);
         shader.setUniform("MVP", c.getMVP(bounds.center));
 
-        super.draw();
+        drawMesh();
     }
 
     @Override

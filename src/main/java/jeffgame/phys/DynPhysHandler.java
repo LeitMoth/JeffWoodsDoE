@@ -83,6 +83,11 @@ public class DynPhysHandler {
         return objStatic.getRectangle().colliding(bounds);
     }
 
+    public boolean isColliding(IPhysDyn dyn)
+    {
+        return bounds.colliding(dyn.getHandler().bounds);
+    }
+
     public void handle(IPhysStatic objStatic) {
         if(!isColliding(objStatic)) return;
 
@@ -90,6 +95,8 @@ public class DynPhysHandler {
         basically this function looks at the slope of the Dynamics movement and compares it to the slope between the two overlapping corners
         with this comparison, we can deduce exactly which side of the rectangle we hit, and resolving is a breeze from there
         TODO: better explanation
+        Overlapping corners is not entirely accurate, it compares the our corner in the direction of the movement,
+        and the boxes corner in the opposite direction of that movement, opposing corners might be the better word
          */
 
         Rectangle rect = objStatic.getRectangle();
@@ -108,14 +115,24 @@ public class DynPhysHandler {
 
         Vector2f delta = otherCorner.sub(thisCorner);
 
-        if(delta.x == 0 || move.y == 0)
+        if(move.x == 0)
         {
-            //If there is an infinite delta slope, or we have no vertical velocity: resolve horizontally
+            //No horizontal velocity, collision must be vertical
+            resolveY(rect, move);
+        }
+        else if(move.y == 0)
+        {
+            //No vertical velocity, collision must be horizontal
             resolveX(rect, move);
         }
-        else if(delta.y == 0 || move.x == 0)
+        else if(delta.x == 0)
         {
-            //If there is no delta slope, or we have no horizontal velocity: resolve vertically
+            //No x distance between the corners, assume we are right up against the left or right side of a rectangle
+            resolveX(rect, move);
+        }
+        else if(delta.y == 0)
+        {
+            //No y distance between the corners, assume we are right up against a ceiling or floor
             resolveY(rect, move);
         }
         else

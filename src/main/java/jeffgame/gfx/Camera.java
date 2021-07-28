@@ -1,6 +1,7 @@
 package jeffgame.gfx;
 
 import jeffgame.JeffWoods;
+import jeffgame.states.StatePlay;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 
@@ -15,6 +16,11 @@ public class Camera {
     private Matrix4f view = new Matrix4f();
 
     public Vector2f pos = new Vector2f();
+
+    public Vector2f getPos() {
+        return pos;
+    }
+
     public float zoom;
 
     public float zoomMax = 3f;
@@ -38,38 +44,44 @@ public class Camera {
     public void update(JeffWoods engine)
     {
         Window window = engine.getWindow();
-        float zoom_speed = 0.1f;
-        if(window.keyDown(GLFW_KEY_KP_7) && zoom < zoomMax)
+        float zoom_speed = 0.2f;
+        if(window.keyDown(GLFW_KEY_KP_7))
         {
             zoom += zoom_speed;
-            System.out.println(zoom);
         }
-        if(window.keyDown(GLFW_KEY_KP_9) && zoom > zoomMin)
+        if(window.keyDown(GLFW_KEY_KP_9))
         {
             zoom -= zoom_speed;
-            System.out.println(zoom);
         }
+        if(zoom > zoomMax) zoom = zoomMax;
+        if(zoom < zoomMin) zoom = zoomMin;
+
         if(window.keyDown(GLFW_KEY_KP_5))
         {
             zoom = 1;
         }
 
-        float mov_speed = 1;
-        if(window.keyDown(GLFW_KEY_KP_4))
+        if(!window.keyDown(GLFW_KEY_TAB))
         {
-            pos.x -= mov_speed;
+            if(engine.state instanceof StatePlay)
+            {
+                pos = new Vector2f(( (StatePlay) engine.state).player.getBounds().center);
+            }
         }
-        if(window.keyDown(GLFW_KEY_KP_6))
-        {
-            pos.x += mov_speed;
-        }
-        if(window.keyDown(GLFW_KEY_KP_2))
-        {
-            pos.y -= mov_speed;
-        }
-        if(window.keyDown(GLFW_KEY_KP_8))
-        {
-            pos.y += mov_speed;
+        else {
+            float mov_speed = 2;
+            if (window.keyDown(GLFW_KEY_KP_4)) {
+                pos.x -= mov_speed;
+            }
+            if (window.keyDown(GLFW_KEY_KP_6)) {
+                pos.x += mov_speed;
+            }
+            if (window.keyDown(GLFW_KEY_KP_2)) {
+                pos.y -= mov_speed;
+            }
+            if (window.keyDown(GLFW_KEY_KP_8)) {
+                pos.y += mov_speed;
+            }
         }
     }
 
