@@ -16,6 +16,10 @@ public class Camera {
 
     public Vector2f pos = new Vector2f();
     public float zoom;
+    
+
+    public float zoomMax = 3f;
+    public float zoomMin = 0.5f;
 
     public Camera() {
         pos.x = 0;
@@ -36,15 +40,17 @@ public class Camera {
     {
         Window window = engine.getWindow();
         float zoom_speed = 0.1f;
-        if(window.keyDown(GLFW_KEY_KP_7))
+        if(window.keyDown(GLFW_KEY_KP_7) && zoom < zoomMax)
         {
             zoom += zoom_speed;
+            System.out.println(zoom);
         }
-        if(window.keyDown(GLFW_KEY_KP_9))
+        if(window.keyDown(GLFW_KEY_KP_9) && zoom > zoomMin)
         {
             zoom -= zoom_speed;
+            System.out.println(zoom);
         }
-        if(window.keyDown(GLFW_KEY_KP_5))
+        if(window.keyDown(GLFW_KEY_KP_5) )
         {
             zoom = 1;
         }
