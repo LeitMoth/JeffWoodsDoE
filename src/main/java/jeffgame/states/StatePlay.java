@@ -1,27 +1,38 @@
 package jeffgame.states;
 
-import jeffgame.gameobject.Brick;
+import jeffgame.gameobject.*;
 import jeffgame.phys.IPhysDyn;
 import jeffgame.phys.IPhysStatic;
 import jeffgame.JeffWoods;
 import jeffgame.ResourceStore;
-import jeffgame.gameobject.IGameObject;
-import jeffgame.gameobject.Player;
-import jeffgame.gameobject.Sprite;
 import jeffgame.gfx.Camera;
+import jeffgame.sound.Music;
+import org.joml.Vector2f;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
 import static org.lwjgl.opengl.GL11.*;
 
-public class StatePlay implements IGameState{
+public class StatePlay implements IGameState {
 
     public ArrayList<IGameObject> gameObjects;
     public Camera camera = new Camera();
 
+    public Player player = null;
+
+    Music song = new Music("/sound/level_theme.wav");
+
+    private int playTimer = 0;
+
     @Override
     public void init() {
 
+//        musicHandler.PlayMusic("/sound/level_theme.wav");
+        song.play();
         glDisable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -29,20 +40,25 @@ public class StatePlay implements IGameState{
 
         gameObjects = new ArrayList<>();
 
-        Sprite boss =
-                new Sprite(
-                        30,30,
-                        ResourceStore.getTexture("/FinalBoss.png"),
-                        ResourceStore.getShader("/tex.vs.glsl", "/tex.fs.glsl")
-                );
 
-        boss.getPosition().add(-40,60);
-        gameObjects.add(boss);
+        gameObjects.add(new Background(ResourceStore.getTexture("/texture/city_background_night.png")));
+
+        player = new Player();
+        gameObjects.add(player);
+
+//        Sprite boss =
+//                new Sprite(
+//                        30,30,
+//                        ResourceStore.getTexture("/texture/FinalBoss.png"),
+//                        ResourceStore.getShader("/shader/tex.vs.glsl", "/shader/tex.fs.glsl")
+//                );
+//
+//        boss.getPosition().add(-40,60);
+//        gameObjects.add(boss);
 
         gameObjects.add(new Brick(30,30,-80,60));
         gameObjects.add(new Brick(30,30,-150,-30));
 
-        gameObjects.add(new Player());
         gameObjects.add(new Brick(40,70,30,0));
 
         gameObjects.add(new Brick(40,70,71,0));
@@ -54,6 +70,13 @@ public class StatePlay implements IGameState{
         gameObjects.add(new Brick(30,30,120,100));
         gameObjects.add(new Brick(30,30,160,160));
         gameObjects.add(new Brick(30,30,60,200));
+
+        gameObjects.add(new Enemy(new Vector2f(-80,110), new Vector2f(30,30)));
+        gameObjects.add(new Enemy(new Vector2f(-50,40), new Vector2f(20,20)));
+
+        gameObjects.add(new Collectable(new Vector2f(160, 100), new Vector2f(20,50),
+                ResourceStore.getTexture("/texture/health.png"),
+                ResourceStore.getShader("/shader/tex.vs.glsl","/shader/tex.fs.glsl")));
     }
 
     @Override
@@ -87,8 +110,8 @@ public class StatePlay implements IGameState{
         (Something like summing the perimeter of each object then squaring, then comparing that
         to distance squared to filter out faw away rectangles)
          */
-        gameObjects.stream().filter(gameObjDyn -> gameObjDyn instanceof IPhysDyn).forEach(gameObjectDyn -> {
-            IPhysDyn physDyn = (IPhysDyn) gameObjectDyn;
+        Stream<IPhysDyn> dynamics = gameObjects.stream().filter(gameObjDyn -> gameObjDyn instanceof IPhysDyn).map(gameObject -> (IPhysDyn) gameObject);
+        dynamics.forEach(physDyn -> {
             gameObjects.stream().filter(gameObjStatic -> gameObjStatic instanceof IPhysStatic).sorted( (objStatic1, objStatic2) -> {
                 return (int) (physDyn.getHandler().getCenterDistanceSqrd((IPhysStatic)objStatic1) - physDyn.getHandler().getCenterDistanceSqrd((IPhysStatic) objStatic2));
             }).forEach(objStatic -> {
@@ -96,7 +119,43 @@ public class StatePlay implements IGameState{
             });
         });
 
+        /*
+        Get list of all interactable and dynamic objects
+        Match each every item in the list to every other item once, and make them interact with each other if they are colliding
+         */
+
+        List<IGameObject> intDynObjs = gameObjects.stream()
+                .filter(intDyn -> intDyn instanceof IInteractable && intDyn instanceof IPhysDyn)
+                .collect(Collectors.toList());
+
+        for(int i = 0; i < intDynObjs.size() - 1; i++ ) {
+            for(int j = i + 1; j < intDynObjs.size(); j++ ) {
+                if(
+                        ((IPhysDyn) intDynObjs.get(i)).getHandler().isColliding((IPhysDyn) intDynObjs.get(j))
+                ) {
+                    ((IInteractable) intDynObjs.get(i)).interact((IInteractable) intDynObjs.get(j), engine);
+                    ((IInteractable) intDynObjs.get(j)).interact((IInteractable) intDynObjs.get(i), engine);
+                }
+            }
+        }
+
         camera.update(engine);
+
+        //Adding Player Death function here
+        if(player.getHealth() <= 0){
+            engine.switchState(new StateGameOver());
+        }
+
+        // Testing Credits
+        final int PLAY_TIME = 60; //seconds
+        if (++playTimer > PLAY_TIME*60) {
+            engine.switchState(new StateCredits());
+        }
+
+        if(engine.getWindow().keyDown(GLFW_KEY_R))
+        {
+            engine.switchState(new StatePlay());
+        }
     }
 
     @Override
@@ -113,5 +172,6 @@ public class StatePlay implements IGameState{
         {
             object.cleanup();
         }
+        song.stop();
     }
 }
