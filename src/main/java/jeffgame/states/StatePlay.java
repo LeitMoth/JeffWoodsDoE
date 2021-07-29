@@ -80,6 +80,15 @@ public class StatePlay implements IGameState{
             gameObject.update(engine);
         }
 
+        //Adding Player Death function here
+
+        int ch = player.getHealth();
+
+        if(ch <= 0){
+            engine.switchState(new StateGameOver());
+
+        }
+
         /*
         Could be more optimized
         current process:

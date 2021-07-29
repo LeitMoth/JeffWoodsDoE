@@ -21,11 +21,11 @@ public class Player extends SpriteEntity implements IPhysDyn, IInteractable {
     public Player() {
         super(
                 new Vector2f(0,0),new Vector2f(50,20),
-                ResourceStore.getTexture("/texture/deej_weeg.png"),
+                ResourceStore.getTexture("/texture/Player.png"),
                 ResourceStore.getShader("/shader/tex.vs.glsl", "/shader/tex.fs.glsl")
         );
         physHandler = new DynPhysHandler(bounds);
-        health = 100;
+        health = 10;
         hitCooldownStart = 30;
     }
 
