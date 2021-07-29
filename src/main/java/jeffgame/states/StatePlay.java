@@ -19,7 +19,13 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class StatePlay implements IGameState {
 
-    public ArrayList<IGameObject> gameObjects;
+    public ArrayList<IGameObject> gameObjects = new ArrayList<>();
+    public ArrayList<IGameObject> toRemove = new ArrayList<>();
+
+    public void queueRemoveGameObject(IGameObject gameObject) {
+        toRemove.add(gameObject);
+    }
+
     public Camera camera = new Camera();
 
     public Player player = null;
@@ -29,8 +35,9 @@ public class StatePlay implements IGameState {
     private int playTimer = 0;
 
     @Override
-    public void init() {
+    public void init(JeffWoods engine) {
 
+        camera.setDefaultZoom(0.3f);
 //        musicHandler.PlayMusic("/sound/level_theme.wav");
         song.play();
         glDisable(GL_DEPTH_TEST);
@@ -38,12 +45,12 @@ public class StatePlay implements IGameState {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 
-        gameObjects = new ArrayList<>();
+//        gameObjects = new ArrayList<>();
 
 
         gameObjects.add(new Background(ResourceStore.getTexture("/texture/city_background_night.png")));
 
-        player = new Player();
+        player = new Player(engine);
         gameObjects.add(player);
 
 //        Sprite boss =
@@ -81,9 +88,21 @@ public class StatePlay implements IGameState {
 
     @Override
     public void update(JeffWoods engine) {
+        int toDealWith = 0;
         for(IGameObject gameObject : gameObjects)
         {
             gameObject.update(engine);
+
+            //victory check
+            if(gameObject instanceof Enemy || gameObject instanceof Collectable)
+            {
+                toDealWith++;
+            }
+        }
+        if(toDealWith == 0)
+        {
+            engine.switchState(new StateCredits());
+            return;
         }
 
         /*
@@ -147,15 +166,23 @@ public class StatePlay implements IGameState {
         }
 
         // Testing Credits
-        final int PLAY_TIME = 60; //seconds
-        if (++playTimer > PLAY_TIME*60) {
-            engine.switchState(new StateCredits());
-        }
+//        final int PLAY_TIME = 60; //seconds
+//        if (++playTimer > PLAY_TIME*60) {
+//            engine.switchState(new StateCredits());
+//        }
 
         if(engine.getWindow().keyDown(GLFW_KEY_R))
         {
             engine.switchState(new StatePlay());
         }
+
+        //MUST NOT MODIFY GAMEOBJECTS PAST THIS POINT
+        for(IGameObject g : toRemove)
+        {
+            gameObjects.remove(g);
+        }
+        toRemove.clear();
+
     }
 
     @Override
@@ -174,4 +201,5 @@ public class StatePlay implements IGameState {
         }
         song.stop();
     }
+
 }

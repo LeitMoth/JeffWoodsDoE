@@ -3,6 +3,7 @@ package jeffgame.gameobject;
 import jeffgame.JeffWoods;
 import jeffgame.gfx.Camera;
 import jeffgame.phys.Rectangle;
+import jeffgame.states.StatePlay;
 
 public class Entity implements IGameObject {
 
@@ -13,9 +14,8 @@ public class Entity implements IGameObject {
 
     protected int health;
     protected int hitCooldown;
-    protected int timer;
 
-    protected int hitCooldownStart = 60;
+    protected int hitCooldownStart = 30;
 
     public int getHealth() {
         return health;
@@ -41,6 +41,12 @@ public class Entity implements IGameObject {
     @Override
     public void update(JeffWoods engine) {
         hitCooldown--;
+
+        if(health <= 0 && engine.state instanceof StatePlay)
+        {
+            cleanup();
+            ((StatePlay) engine.state).queueRemoveGameObject(this);
+        }
     }
 
     @Override

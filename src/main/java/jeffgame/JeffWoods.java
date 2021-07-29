@@ -26,7 +26,7 @@ public class JeffWoods {
 
         this.state = state;
         if(this.state != null) {
-            this.state.init();
+            this.state.init(this);
         }
     }
 

@@ -17,10 +17,10 @@ public class StateCredits implements IGameState {
     Sprite background;
     Shader menuShader;
     Texture backTex;
-    Music song = new Music("/sound/level_theme.wav");
+    Music song = new Music("/sound/japes.wav");
 
     @Override
-    public void init() {
+    public void init(JeffWoods engine) {
 
         glDisable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
