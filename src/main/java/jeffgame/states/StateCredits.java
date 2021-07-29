@@ -28,7 +28,7 @@ public class StateCredits implements IGameState {
 
         cam = new Camera();
 
-        backTex = ResourceStore.getTexture("/texture/credit.png");
+        backTex = ResourceStore.getTexture("/texture/credit1.png");
 
         menuShader = ResourceStore.getShader("/shader/tex.vs.glsl", "/shader/tex.fs.glsl");
 
