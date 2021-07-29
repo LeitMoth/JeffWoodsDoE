@@ -4,7 +4,7 @@ import jeffgame.JeffWoods;
 import jeffgame.ResourceStore;
 import jeffgame.gameobject.Sprite;
 import jeffgame.gfx.Camera;
-import jeffgame.sound.PlayMusic;
+import jeffgame.sound.MusicHandler;
 import jeffgame.gfx.Shader;
 import jeffgame.gfx.Texture;
 
@@ -18,10 +18,12 @@ public class StateMenu implements IGameState {
     Sprite background, title;
     Shader menuShader;
     Texture backTex, textTex;
-    PlayMusic musicHandler = new PlayMusic();
+    MusicHandler musicHandler = new MusicHandler();
 
     @Override
     public void init() {
+
+
         glDisable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -42,6 +44,7 @@ public class StateMenu implements IGameState {
 
     @Override
     public void update(JeffWoods engine) {
+
         if(engine.getWindow().keyDown(GLFW_KEY_ENTER))
         {
             //This is how state switching should be done
@@ -60,6 +63,7 @@ public class StateMenu implements IGameState {
     public void cleanup() {
         background.cleanup();
         title.cleanup();
+        musicHandler.StopMusic();
     }
 
 

@@ -5,6 +5,7 @@ import jeffgame.ResourceStore;
 import jeffgame.gfx.Camera;
 import jeffgame.phys.DynPhysHandler;
 import jeffgame.phys.IPhysDyn;
+import jeffgame.sound.MusicHandler;
 import jeffgame.states.StatePlay;
 import org.joml.Vector2f;
 
@@ -17,15 +18,16 @@ public class Player extends SpriteEntity implements IPhysDyn, IInteractable {
     public DynPhysHandler getHandler() {
         return physHandler;
     }
+    MusicHandler soundEffectMan = new MusicHandler();
 
     public Player() {
         super(
                 new Vector2f(0,0),new Vector2f(50,20),
-                ResourceStore.getTexture("/texture/deej_weeg.png"),
+                ResourceStore.getTexture("/texture/Player.png"),
                 ResourceStore.getShader("/shader/tex.vs.glsl", "/shader/tex.fs.glsl")
         );
         physHandler = new DynPhysHandler(bounds);
-        health = 100;
+        health = 10;
         hitCooldownStart = 30;
     }
 
@@ -59,6 +61,7 @@ public class Player extends SpriteEntity implements IPhysDyn, IInteractable {
 
         if(engine.getWindow().keyDown(GLFW_KEY_SPACE) && !physHandler.inAir)
         {
+            soundEffectMan.PlaySoundEffect("/sound/jump.wav");
             physHandler.getVelocity().y = 10.f;
         }
 

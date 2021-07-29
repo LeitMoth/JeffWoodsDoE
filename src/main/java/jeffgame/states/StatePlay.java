@@ -6,12 +6,12 @@ import jeffgame.phys.IPhysStatic;
 import jeffgame.JeffWoods;
 import jeffgame.ResourceStore;
 import jeffgame.gfx.Camera;
+import jeffgame.sound.MusicHandler;
 import org.joml.Vector2f;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
@@ -22,11 +22,15 @@ public class StatePlay implements IGameState{
     public ArrayList<IGameObject> gameObjects;
     public Camera camera = new Camera();
 
+    MusicHandler musicHandler = new MusicHandler();
+
     public Player player = null;
 
     @Override
     public void init() {
 
+
+        musicHandler.PlayMusic("/sound/level_theme.wav");
         glDisable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -78,6 +82,15 @@ public class StatePlay implements IGameState{
         for(IGameObject gameObject : gameObjects)
         {
             gameObject.update(engine);
+        }
+
+        //Adding Player Death function here
+
+        int ch = player.getHealth();
+
+        if(ch <= 0){
+            engine.switchState(new StateGameOver());
+
         }
 
         /*
@@ -155,5 +168,6 @@ public class StatePlay implements IGameState{
         {
             object.cleanup();
         }
+        musicHandler.StopMusic();
     }
 }
