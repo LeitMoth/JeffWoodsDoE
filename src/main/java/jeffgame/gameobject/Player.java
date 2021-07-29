@@ -5,6 +5,7 @@ import jeffgame.ResourceStore;
 import jeffgame.gfx.Camera;
 import jeffgame.phys.DynPhysHandler;
 import jeffgame.phys.IPhysDyn;
+import jeffgame.sound.SoundHandler;
 import jeffgame.states.StatePlay;
 import org.joml.Vector2f;
 
@@ -27,6 +28,10 @@ public class Player extends SpriteEntity implements IPhysDyn, IInteractable {
         physHandler = new DynPhysHandler(bounds);
         health = 10;
         hitCooldownStart = 30;
+
+        //Go ahead and make sure it's in the store, so first jump doesn't slow down the game to look for it
+        ResourceStore.getClip("/sound/jump.wav");
+
     }
 
     @Override
@@ -59,6 +64,8 @@ public class Player extends SpriteEntity implements IPhysDyn, IInteractable {
 
         if(engine.getWindow().keyDown(GLFW_KEY_SPACE) && !physHandler.inAir)
         {
+//            soundEffectMan.PlaySoundEffect("/sound/jump.wav");
+            SoundHandler.playSoundEffect("/sound/jump.wav");
             physHandler.getVelocity().y = 10.f;
         }
 
@@ -82,3 +89,4 @@ public class Player extends SpriteEntity implements IPhysDyn, IInteractable {
         }
     }
 }
+

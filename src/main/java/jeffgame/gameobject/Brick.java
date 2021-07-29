@@ -1,3 +1,4 @@
+
 package jeffgame.gameobject;
 
 import jeffgame.JeffWoods;
@@ -44,3 +45,4 @@ public class Brick implements IGameObject, IPhysStatic {
         sprite.cleanup();
     }
 }
+

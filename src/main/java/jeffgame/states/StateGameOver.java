@@ -1,3 +1,4 @@
+
 package jeffgame.states;
 
 import jeffgame.JeffWoods;
@@ -6,7 +7,7 @@ import jeffgame.gameobject.Sprite;
 import jeffgame.gfx.Camera;
 import jeffgame.gfx.Shader;
 import jeffgame.gfx.Texture;
-import jeffgame.sound.PlayMusic;
+import jeffgame.sound.Music;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL33.*;
@@ -18,10 +19,11 @@ public class StateGameOver implements IGameState {
     Sprite background, title, restart;
     Shader menuShader;
     Texture backTex, textTex, restartTex;
-    PlayMusic musicHandler = new PlayMusic();
+    Music song = new Music("/sound/Game_Over.wav");
 
     @Override
     public void init() {
+
         glDisable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -40,11 +42,13 @@ public class StateGameOver implements IGameState {
         restart = new Sprite(cam.WIDTH*.50f,cam.HEIGHT*.2f, restartTex, menuShader);
         restart.getPosition().y += cam.HEIGHT/3;
 
-        musicHandler.PlayMusic("/sound/menu_theme.wav");
+//        musicHandler.PlayMusic("/sound/Game_Over.wav");
+        song.play();
     }
 
     @Override
     public void update(JeffWoods engine) {
+
         if(engine.getWindow().keyDown(GLFW_KEY_R))
         {
             //This is how state switching should be done
@@ -65,7 +69,9 @@ public class StateGameOver implements IGameState {
         background.cleanup();
         title.cleanup();
         restart.cleanup();
+        song.stop();
     }
 
 
 }
+

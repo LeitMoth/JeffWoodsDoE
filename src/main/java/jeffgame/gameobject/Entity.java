@@ -13,12 +13,17 @@ public class Entity implements IGameObject {
 
     protected int health;
     protected int hitCooldown;
+    protected int timer;
 
     protected int hitCooldownStart = 60;
 
     public int getHealth() {
         return health;
     }
+
+    public float getX() { return bounds.center.x; }
+
+    public float getY() { return bounds.center.y; }
 
     public void damage(int damage)
     {
