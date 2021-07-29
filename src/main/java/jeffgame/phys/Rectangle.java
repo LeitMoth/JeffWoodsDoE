@@ -4,6 +4,13 @@ import org.joml.Vector2f;
 
 public class Rectangle {
     public Vector2f center, halfSize;
+
+    public Rectangle(Vector2f c, Vector2f h)
+    {
+        center = c;
+        halfSize = h;
+    }
+
     public Rectangle() {
         center = new Vector2f();
         halfSize = new Vector2f();

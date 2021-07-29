@@ -18,6 +18,7 @@ public class Music {
     }
 
     public void play(){
+        clip.setFramePosition(0);
         clip.start();
     }
     public void stop(){

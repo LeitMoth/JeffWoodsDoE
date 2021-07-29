@@ -2,9 +2,9 @@ package jeffgame.gameobject;
 
 import jeffgame.JeffWoods;
 import jeffgame.ResourceStore;
-import jeffgame.gfx.Camera;
 import jeffgame.phys.DynPhysHandler;
 import jeffgame.phys.IPhysDyn;
+import jeffgame.phys.Rectangle;
 import jeffgame.sound.SoundHandler;
 import jeffgame.states.StatePlay;
 import org.joml.Vector2f;
@@ -14,12 +14,15 @@ import static org.lwjgl.glfw.GLFW.*;
 public class Player extends SpriteEntity implements IPhysDyn, IInteractable {
 
     private DynPhysHandler physHandler;
+    private int facing = 1;
     @Override
     public DynPhysHandler getHandler() {
         return physHandler;
     }
 
-    public Player() {
+    private PlayerAttack hit;
+
+    public Player(JeffWoods engine) {
         super(
                 new Vector2f(0,0),new Vector2f(50,20),
                 ResourceStore.getTexture("/texture/Player.png"),
@@ -29,6 +32,13 @@ public class Player extends SpriteEntity implements IPhysDyn, IInteractable {
         health = 10;
         hitCooldownStart = 30;
 
+        hit = new PlayerAttack(new Rectangle(new Vector2f(0,0),new Vector2f(20,5)));
+        if(engine.state instanceof StatePlay)
+        {
+            ((StatePlay) engine.state).gameObjects.add(hit);
+        }
+        hit.active = false;
+
         //Go ahead and make sure it's in the store, so first jump doesn't slow down the game to look for it
         ResourceStore.getClip("/sound/jump.wav");
 
@@ -36,17 +46,22 @@ public class Player extends SpriteEntity implements IPhysDyn, IInteractable {
 
     @Override
     public void update(JeffWoods engine) {
+        //Track health
         super.update(engine);
+
+        //Handle physics
         physHandler.beginMove();
 
         float speed = 5f;
         if(engine.getWindow().keyDown(GLFW_KEY_RIGHT))
         {
             bounds.center.x += speed;
+            facing = 1;
         }
         if(engine.getWindow().keyDown(GLFW_KEY_LEFT))
         {
             bounds.center.x -= speed;
+            facing = -1;
         }
 
         physHandler.enableGravity = true;
@@ -70,12 +85,26 @@ public class Player extends SpriteEntity implements IPhysDyn, IInteractable {
         }
 
         physHandler.endMove();
-    }
 
-    @Override
-    public void draw(Camera c) {
-        if(hitCooldown < 0 || hitCooldown % 2 == 0) {
-            super.draw(c);
+        //Handle attacks
+        if(engine.getWindow().keyDown(GLFW_KEY_X))
+        {
+            /*
+            TODO: fix
+            because this code runs before the physics are resolved, the hitbox for the attack will be aligned with the
+            players position *before* they are moved out of whatever solid they are in
+
+            This results in a constant negligible offset,
+            and the weapon clipping into the ground for a single frame when the player lands on the ground
+             */
+            Rectangle hitb = hit.getHandler().getBounds();
+            hitb.center = new Vector2f(bounds.center);
+            hitb.center.x += (bounds.halfSize.x + hitb.halfSize.x) * facing;
+            hit.active = true;
+        }
+        else
+        {
+            hit.active = false;
         }
     }
 

@@ -21,15 +21,23 @@ public class Camera {
         return pos;
     }
 
-    public float zoom;
 
     public float zoomMax = 3f;
     public float zoomMin = 0.2f;
+    public float zoomStart = 1;
+
+    public float zoom;
 
     public Camera() {
         pos.x = 0;
         pos.y = 0;
-        zoom = 1;
+        zoom = zoomStart;
+    }
+
+    public void setDefaultZoom(float zoom)
+    {
+        this.zoom = zoom;
+        this.zoomStart = zoom;
     }
 
     public Matrix4f getMVP(Vector2f modelPos)
@@ -58,7 +66,7 @@ public class Camera {
 
         if(window.keyDown(GLFW_KEY_KP_5))
         {
-            zoom = 1;
+            zoom = zoomStart;
         }
 
         if(!window.keyDown(GLFW_KEY_TAB))

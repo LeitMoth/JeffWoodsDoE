@@ -21,7 +21,7 @@ public class StateMenu implements IGameState {
     Music song = new Music("/sound/menu_theme.wav");
 
     @Override
-    public void init() {
+    public void init(JeffWoods engine) {
 
 
         glDisable(GL_DEPTH_TEST);

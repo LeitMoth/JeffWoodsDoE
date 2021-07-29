@@ -7,9 +7,17 @@ public class DynPhysHandler {
     /*should be temp*/
     public boolean enableGravity = true;
 
-    Rectangle bounds;
-    Vector2f velocity = new Vector2f();
-    Vector2f lastPos;
+
+    public boolean staticCollidable = true;
+
+    private Rectangle bounds;
+
+    public Rectangle getBounds() {
+        return bounds;
+    }
+
+    private Vector2f velocity = new Vector2f();
+    private Vector2f lastPos;
 
     public Vector2f getVelocity() {
         return velocity;
@@ -22,8 +30,14 @@ public class DynPhysHandler {
 
     public DynPhysHandler(Rectangle bounds)
     {
+        this(bounds, true);
+    }
+
+    public DynPhysHandler(Rectangle bounds, boolean staticCollide)
+    {
         this.bounds = bounds;
         this.lastPos = new Vector2f(bounds.center);
+        staticCollidable = staticCollide;
     }
 
     public void beginMove()
@@ -80,6 +94,7 @@ public class DynPhysHandler {
 
     public boolean isColliding(IPhysStatic objStatic)
     {
+        if(!staticCollidable) return false;
         return objStatic.getRectangle().colliding(bounds);
     }
 

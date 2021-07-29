@@ -19,6 +19,7 @@ public class Enemy extends SpriteEntity implements IPhysDyn, IInteractable {
     public Enemy(Vector2f pos, Vector2f size, Texture t, Shader s) {
         super(pos, size, t, s);
         physHandler = new DynPhysHandler(bounds);
+        health = 4;
     }
 
     public Enemy(Vector2f pos, Vector2f size)
