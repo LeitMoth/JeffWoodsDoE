@@ -21,7 +21,9 @@ public class SpriteEntity extends Entity {
 
     @Override
     public void draw(Camera c) {
-        sprite.draw(c);
+        if(hitCooldown < 0 || hitCooldown % 2 == 0) {
+            sprite.draw(c);
+        }
     }
 
     @Override
