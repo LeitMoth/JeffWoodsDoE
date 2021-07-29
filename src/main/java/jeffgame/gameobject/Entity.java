@@ -33,16 +33,6 @@ public class Entity implements IGameObject {
         }
     }
 
-    public boolean timer() {
-        if (timer > 3600) {
-            boolean creditsTime = true;
-            return creditsTime;
-        } else {
-            timer += 10;
-        }
-        return false;
-    }
-
     @Override
     public void draw(Camera c) {
 

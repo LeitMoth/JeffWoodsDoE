@@ -6,7 +6,7 @@ import jeffgame.gameobject.Sprite;
 import jeffgame.gfx.Camera;
 import jeffgame.gfx.Shader;
 import jeffgame.gfx.Texture;
-import jeffgame.sound.MusicHandler;
+import jeffgame.sound.Music;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
 import static org.lwjgl.opengl.GL11.*;
@@ -17,7 +17,7 @@ public class StateCredits implements IGameState {
     Sprite background;
     Shader menuShader;
     Texture backTex;
-    MusicHandler musicHandler = new MusicHandler();
+    Music song = new Music("/sound/level_theme.wav");
 
     @Override
     public void init() {
@@ -34,7 +34,8 @@ public class StateCredits implements IGameState {
 
         background = new Sprite(cam.WIDTH,cam.HEIGHT, backTex, menuShader);
 
-        musicHandler.PlayMusic("/sound/level_theme.wav");
+//        musicHandler.PlayMusic("/sound/level_theme.wav");
+        song.play();
     }
 
     @Override
@@ -56,7 +57,7 @@ public class StateCredits implements IGameState {
     @Override
     public void cleanup() {
         background.cleanup();
-        musicHandler.StopMusic();
+        song.stop();
     }
 
 

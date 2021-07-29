@@ -6,7 +6,7 @@ import jeffgame.gameobject.Sprite;
 import jeffgame.gfx.Camera;
 import jeffgame.gfx.Shader;
 import jeffgame.gfx.Texture;
-import jeffgame.sound.MusicHandler;
+import jeffgame.sound.Music;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL33.*;
@@ -18,7 +18,7 @@ public class StateGameOver implements IGameState {
     Sprite background, title, restart;
     Shader menuShader;
     Texture backTex, textTex, restartTex;
-    MusicHandler musicHandler = new MusicHandler();
+    Music song = new Music("/sound/Game_Over.wav");
 
     @Override
     public void init() {
@@ -41,7 +41,8 @@ public class StateGameOver implements IGameState {
         restart = new Sprite(cam.WIDTH*.50f,cam.HEIGHT*.2f, restartTex, menuShader);
         restart.getPosition().y += cam.HEIGHT/3;
 
-        musicHandler.PlayMusic("/sound/Game_Over.wav");
+//        musicHandler.PlayMusic("/sound/Game_Over.wav");
+        song.play();
     }
 
     @Override
@@ -67,7 +68,7 @@ public class StateGameOver implements IGameState {
         background.cleanup();
         title.cleanup();
         restart.cleanup();
-        musicHandler.StopMusic();
+        song.stop();
     }
 
 

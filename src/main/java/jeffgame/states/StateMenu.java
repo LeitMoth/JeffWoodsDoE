@@ -4,7 +4,7 @@ import jeffgame.JeffWoods;
 import jeffgame.ResourceStore;
 import jeffgame.gameobject.Sprite;
 import jeffgame.gfx.Camera;
-import jeffgame.sound.MusicHandler;
+import jeffgame.sound.Music;
 import jeffgame.gfx.Shader;
 import jeffgame.gfx.Texture;
 
@@ -18,7 +18,7 @@ public class StateMenu implements IGameState {
     Sprite background, title;
     Shader menuShader;
     Texture backTex, textTex;
-    MusicHandler musicHandler = new MusicHandler();
+    Music song = new Music("/sound/menu_theme.wav");
 
     @Override
     public void init() {
@@ -39,7 +39,8 @@ public class StateMenu implements IGameState {
         title = new Sprite(cam.WIDTH*.95f,cam.HEIGHT*.2f, textTex, menuShader);
         title.getPosition().y += cam.HEIGHT/4;
 
-        musicHandler.PlayMusic("/sound/menu_theme.wav");
+//        musicHandler.PlayMusic("/sound/menu_theme.wav");
+        song.play();
     }
 
     @Override
@@ -63,7 +64,7 @@ public class StateMenu implements IGameState {
     public void cleanup() {
         background.cleanup();
         title.cleanup();
-        musicHandler.StopMusic();
+        song.stop();
     }
 
 
