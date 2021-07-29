@@ -11,7 +11,6 @@ import org.joml.Vector2f;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
