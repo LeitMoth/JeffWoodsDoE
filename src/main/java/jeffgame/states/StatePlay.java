@@ -38,7 +38,6 @@ public class StatePlay implements IGameState{
 
         gameObjects = new ArrayList<>();
 
-
         gameObjects.add(new Background(ResourceStore.getTexture("/texture/city_background_night.png")));
 
         player = new Player();
@@ -92,6 +91,13 @@ public class StatePlay implements IGameState{
             engine.switchState(new StateGameOver());
 
         }
+
+        // Testing Credits
+
+        if (player.timer()) {
+            engine.switchState(new StateCredits());
+        }
+
 
         /*
         Could be more optimized

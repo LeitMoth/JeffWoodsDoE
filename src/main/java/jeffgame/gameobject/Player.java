@@ -29,6 +29,8 @@ public class Player extends SpriteEntity implements IPhysDyn, IInteractable {
         physHandler = new DynPhysHandler(bounds);
         health = 10;
         hitCooldownStart = 30;
+
+
     }
 
     @Override

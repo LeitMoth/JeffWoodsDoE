@@ -13,6 +13,7 @@ public class Entity implements IGameObject {
 
     protected int health;
     protected int hitCooldown;
+    protected int timer;
 
     protected int hitCooldownStart = 60;
 
@@ -20,12 +21,26 @@ public class Entity implements IGameObject {
         return health;
     }
 
+    public float getX() { return bounds.center.x; }
+
+    public float getY() { return bounds.center.y; }
+
     public void damage(int damage)
     {
         if(hitCooldown <= 0) {
             health -= damage;
             hitCooldown = hitCooldownStart;
         }
+    }
+
+    public boolean timer() {
+        if (timer > 3600) {
+            boolean creditsTime = true;
+            return creditsTime;
+        } else {
+            timer += 10;
+        }
+        return false;
     }
 
     @Override
