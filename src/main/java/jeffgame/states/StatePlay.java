@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
 import static org.lwjgl.opengl.GL11.*;
 
 public class StatePlay implements IGameState {
@@ -174,6 +175,11 @@ public class StatePlay implements IGameState {
         if(engine.getWindow().keyDown(GLFW_KEY_R))
         {
             engine.switchState(new StatePlay());
+        }
+
+        if(engine.getWindow().keyDown(GLFW_KEY_S)){
+
+            engine.switchState(new StateBossFight());
         }
 
         //MUST NOT MODIFY GAMEOBJECTS PAST THIS POINT

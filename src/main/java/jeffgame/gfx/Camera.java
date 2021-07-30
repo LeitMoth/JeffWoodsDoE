@@ -1,6 +1,7 @@
 package jeffgame.gfx;
 
 import jeffgame.JeffWoods;
+import jeffgame.states.StateBossFight;
 import jeffgame.states.StatePlay;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;

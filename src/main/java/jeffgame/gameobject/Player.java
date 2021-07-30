@@ -6,6 +6,7 @@ import jeffgame.phys.DynPhysHandler;
 import jeffgame.phys.IPhysDyn;
 import jeffgame.phys.Rectangle;
 import jeffgame.sound.SoundHandler;
+import jeffgame.states.StateBossFight;
 import jeffgame.states.StatePlay;
 import org.joml.Vector2f;
 
@@ -36,6 +37,10 @@ public class Player extends SpriteEntity implements IPhysDyn, IInteractable {
         if(engine.state instanceof StatePlay)
         {
             ((StatePlay) engine.state).gameObjects.add(hit);
+        }
+        if(engine.state instanceof StateBossFight)
+        {
+            ((StateBossFight) engine.state).gameObjects.add(hit);
         }
         hit.active = false;
 
@@ -115,6 +120,13 @@ public class Player extends SpriteEntity implements IPhysDyn, IInteractable {
             System.out.println("Picked up collectable: " + ((Collectable) affected).name);
             ((Collectable) affected).cleanup();
             ((StatePlay)engine.state).gameObjects.remove(affected);
+        }
+
+        if(affected instanceof Collectable && engine.state instanceof StateBossFight)
+        {
+            System.out.println("Picked up collectable: " + ((Collectable) affected).name);
+            ((Collectable) affected).cleanup();
+            ((StateBossFight)engine.state).gameObjects.remove(affected);
         }
     }
 }
