@@ -4,6 +4,7 @@ import jeffgame.JeffWoods;
 import jeffgame.ResourceStore;
 import jeffgame.gameobject.*;
 import jeffgame.gfx.Camera;
+import jeffgame.handlers.BossHandler;
 import jeffgame.phys.IPhysDyn;
 import jeffgame.phys.IPhysStatic;
 import jeffgame.sound.Music;
@@ -18,6 +19,8 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
 import static org.lwjgl.opengl.GL11.*;
 
 public class StateBossFight implements IGameState {
+
+    public int localBossID;
 
     public ArrayList<IGameObject> gameObjects = new ArrayList<>();
     public ArrayList<IGameObject> toRemove = new ArrayList<>();
@@ -36,6 +39,11 @@ public class StateBossFight implements IGameState {
 
     @Override
     public void init(JeffWoods engine) {
+
+        localBossID = StatePlay.bossID;
+
+        BossHandler handler = new BossHandler();
+        handler.BossGenerate(localBossID);
 
         camera.setDefaultZoom(0.3f);
 //        musicHandler.PlayMusic("/sound/level_theme.wav");
@@ -63,23 +71,25 @@ public class StateBossFight implements IGameState {
 //        boss.getPosition().add(-40,60);
 //        gameObjects.add(boss);
 
-        gameObjects.add(new Brick(30,30,-80,60));
-        gameObjects.add(new Brick(30,30,-150,-30));
+        gameObjects.add(new Brick(30,30,150,-50));
 
-        gameObjects.add(new Brick(40,70,30,0));
+        gameObjects.add(new Brick(30,30,-150,-50));
 
-        gameObjects.add(new Brick(40,70,71,0));
-        gameObjects.add(new Brick(40,70,30,-71));
-        gameObjects.add(new Brick(40,70,71,-71));
+        gameObjects.add(new Brick(40,70,-250,-150));
 
-        gameObjects.add(new Brick(600,2,0,-100));
+        gameObjects.add(new Brick(40,70,250,-150));
 
-        gameObjects.add(new Brick(30,30,120,100));
-        gameObjects.add(new Brick(30,30,160,160));
-        gameObjects.add(new Brick(30,30,60,200));
+        gameObjects.add(new Brick(40,470,300,-170));
 
-        gameObjects.add(new Enemy(new Vector2f(-80,110), new Vector2f(30,30)));
-        gameObjects.add(new Enemy(new Vector2f(-50,40), new Vector2f(20,20)));
+        gameObjects.add(new Brick(40,470,-300,-170));
+
+        gameObjects.add(new Brick(600,15,0,-170));
+
+
+        gameObjects.add(new Brick(30,30,120,200));
+
+
+
 
         gameObjects.add(new Collectable(new Vector2f(160, 100), new Vector2f(20,50),
                 ResourceStore.getTexture("/texture/health.png"),

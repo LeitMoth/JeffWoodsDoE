@@ -20,6 +20,8 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class StatePlay implements IGameState {
 
+    public static int bossID = 0;
+
     public ArrayList<IGameObject> gameObjects = new ArrayList<>();
     public ArrayList<IGameObject> toRemove = new ArrayList<>();
 
