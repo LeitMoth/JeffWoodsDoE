@@ -8,6 +8,7 @@ import jeffgame.sound.Music;
 import jeffgame.gfx.Shader;
 import jeffgame.gfx.Texture;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_C;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
 import static org.lwjgl.opengl.GL33.*;
 
@@ -50,6 +51,13 @@ public class StateMenu implements IGameState {
         {
             //This is how state switching should be done
             engine.switchState(new StatePlay());
+            return;
+        }
+
+        if(engine.getWindow().keyDown(GLFW_KEY_C))
+        {
+            //This is how state switching should be done
+            engine.switchState(new StateCredits());
             return;
         }
     }
