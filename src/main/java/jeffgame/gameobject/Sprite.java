@@ -40,12 +40,18 @@ public class Sprite extends Mesh implements IGameObject {
             0,1,2,
             2,3,0,
     };
-
     public Sprite(float width, float height, jeffgame.gfx.Texture t, Shader s) {
+        this(width, height, 1, 1, t, s);
+    }
+
+    public Sprite(float width, float height, float texUScale, float texVScale, jeffgame.gfx.Texture t, Shader s) {
         for(int i = 0; i < positions.length; )
         {
+            texCoords[i] *= texUScale;
             positions[i++] *= width;
+            texCoords[i] *= texVScale;
             positions[i++] *= height;
+
         }
         super.create(positions, texCoords, indices);
         texture = t;

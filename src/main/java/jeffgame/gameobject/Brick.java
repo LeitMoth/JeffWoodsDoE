@@ -13,7 +13,9 @@ public class Brick implements IGameObject, IPhysStatic {
     protected Rectangle bounds = new Rectangle();
 
     public Brick(float width, float height, float x, float y) {
-        sprite = new Sprite(width, height,
+        sprite = new Sprite(
+                width, height,
+                width/50, height/50,
                 ResourceStore.getTexture("/texture/TempBrick.png"),
                 ResourceStore.getShader("/shader/tex.vs.glsl", "/shader/tex.fs.glsl"));
 

@@ -6,9 +6,12 @@ import jeffgame.gfx.Shader;
 import jeffgame.gfx.Texture;
 import jeffgame.phys.DynPhysHandler;
 import jeffgame.phys.IPhysDyn;
+import jeffgame.states.StatePlay;
 import org.joml.Vector2f;
 
 public class Boss extends Enemy {
+
+    private int stillTimer = 0;
 
     public enum ID
     {
@@ -49,7 +52,25 @@ public class Boss extends Enemy {
 
     @Override
     public void update(JeffWoods engine) {
+        if(engine.state instanceof StatePlay)
+        {
+            float velX = getHandler().getVelocity().x;
+            if(Math.abs(velX) < 0.1)
+            {
+                stillTimer++;
+                if(stillTimer >= 30 && !getHandler().inAir)
+                {
+                    getHandler().getVelocity().y = 15;
+                }
+            }
+            else
+            {
+                stillTimer = 0;
+            }
+
+            Vector2f pcenter = ((StatePlay) engine.state).player.getBounds().center;
+            getHandler().getVelocity().x += Math.signum(pcenter.x - bounds.center.x) * 0.02;
+        }
         super.update(engine);
-        System.out.println(health);
     }
 }

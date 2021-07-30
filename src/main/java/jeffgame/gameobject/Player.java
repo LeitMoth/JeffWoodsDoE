@@ -58,6 +58,9 @@ public class Player extends SpriteEntity implements IPhysDyn, IInteractable {
         physHandler.beginMove();
 
         float speed = 5f;
+
+        if(engine.getWindow().keyDown(GLFW_KEY_LEFT_SHIFT)) speed = 20;
+
         if(engine.getWindow().keyDown(GLFW_KEY_RIGHT))
         {
             bounds.center.x += speed;

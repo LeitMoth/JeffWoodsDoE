@@ -10,7 +10,7 @@ import org.joml.Vector2f;
 
 public class Enemy extends SpriteEntity implements IPhysDyn, IInteractable {
 
-    private DynPhysHandler physHandler;
+    protected DynPhysHandler physHandler;
     @Override
     public DynPhysHandler getHandler() {
         return physHandler;

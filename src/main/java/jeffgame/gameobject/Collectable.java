@@ -19,7 +19,7 @@ public class Collectable extends Sprite implements IPhysDyn, IInteractable {
 
     public Collectable(Vector2f pos, Vector2f size, Texture t, Shader s) {
         super(size.x, size.y, t, s);
-        physHandler = new DynPhysHandler(bounds);
+        physHandler = new DynPhysHandler(bounds,false);
         bounds.center = pos;
     }
 

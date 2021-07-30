@@ -14,6 +14,35 @@ public class StateLevel extends StatePlay {
 
     Music song = new Music("/sound/level_theme.wav");
 
+    public void middle(float x, float y, float w, float h)
+    {
+        corner_o(x - w/2,  y - h/2, w, h);
+    }
+
+    public void rona(float x, float y)
+    {
+        gameObjects.add(new Enemy(new Vector2f(x,y), new Vector2f(30,30)));
+    }
+
+    public void corner_o(float x, float y, float w, float h)
+    {
+        corner(x,y,x+w,y+h);
+    }
+
+    public void corner(float x, float y, float x2, float y2)
+    {
+        float w = x2 - x;
+        float h = y2 - y;
+        gameObjects.add(new Brick(w,h, x + w/2, y + h/2));
+    }
+
+    public void bowl(float x, float y)
+    {
+        gameObjects.add(new Collectable(new Vector2f(x, y), new Vector2f(15,50),
+                ResourceStore.getTexture("/texture/health.png"),
+                ResourceStore.getShader("/shader/tex.vs.glsl","/shader/tex.fs.glsl")));
+    }
+
     @Override
     public void init(JeffWoods engine) {
         glDisable(GL_DEPTH_TEST);
@@ -26,29 +55,77 @@ public class StateLevel extends StatePlay {
         gameObjects.add(new Background(ResourceStore.getTexture("/texture/city_background_night.png")));
 
         player = new Player(engine);
+        player.getBounds().center.y = 40;
         gameObjects.add(player);
 
-        gameObjects.add(new Brick(30,30,-80,60));
-        gameObjects.add(new Brick(30,30,-150,-30));
+//        gameObjects.add(new Brick(30,30,-80,60));
+//        gameObjects.add(new Brick(30,30,-150,-30));
+//
+//        gameObjects.add(new Brick(40,70,30,0));
+//
+//        gameObjects.add(new Brick(40,70,71,0));
+//        gameObjects.add(new Brick(40,70,30,-71));
+//        gameObjects.add(new Brick(40,70,71,-71));
+//
+//        gameObjects.add(new Brick(600,2,0,-100));
+//
+//        gameObjects.add(new Brick(30,30,120,100));
+//        gameObjects.add(new Brick(30,30,160,160));
+//        gameObjects.add(new Brick(30,30,60,200));
 
-        gameObjects.add(new Brick(40,70,30,0));
+//        gameObjects.add(new Enemy(new Vector2f(-80,110), new Vector2f(30,30)));
+//        gameObjects.add(new Enemy(new Vector2f(-50,40), new Vector2f(20,20)));
 
-        gameObjects.add(new Brick(40,70,71,0));
-        gameObjects.add(new Brick(40,70,30,-71));
-        gameObjects.add(new Brick(40,70,71,-71));
 
-        gameObjects.add(new Brick(600,2,0,-100));
+        corner(-200,-1000,1_000,0);
+        corner(-1000,-1000,-200,1000);
 
-        gameObjects.add(new Brick(30,30,120,100));
-        gameObjects.add(new Brick(30,30,160,160));
-        gameObjects.add(new Brick(30,30,60,200));
+        middle(-60,60,40,10);
+        middle(60,100,40,10);
+        middle(180,150,40,40);
 
-        gameObjects.add(new Enemy(new Vector2f(-80,110), new Vector2f(30,30)));
-        gameObjects.add(new Enemy(new Vector2f(-50,40), new Vector2f(20,20)));
+        corner(200,0,400,200);
+        corner(200,280,400,1000);
+        bowl(300,240);
 
-        gameObjects.add(new Collectable(new Vector2f(160, 100), new Vector2f(20,50),
-                ResourceStore.getTexture("/texture/health.png"),
-                ResourceStore.getShader("/shader/tex.vs.glsl","/shader/tex.fs.glsl")));
+        rona(700, 50);
+
+        middle(1150, 50, 60, 20);
+        middle(1300, -50, 60, 20);
+        middle(1460, 0, 60, 20);
+        middle(1550, 80, 60, 20);
+
+        bowl(1300,260);
+
+        middle(1400, 160, 60, 20);
+        middle(1550, 240, 60, 20);
+        middle(1750, 240, 60, 20);
+
+        middle(1900, 150, 30, 15);
+        middle(1960, 230, 30, 15);
+        middle(1920, 310, 30, 15);
+
+        corner(2000, -1000, 2200, 400);
+        corner(1800, 300, 1875, 1000);
+        corner(1875, 500, 3000, 1000);
+
+        middle(2300, 250, 70, 15);
+        middle(2450, 300, 70, 15);
+        rona(2450, 315);
+        middle(2700, 300, 70, 15);
+        middle(2800, 360, 40, 15);
+
+
+        middle(3000, 200, 200, 30);
+        rona(2930, 315);
+        rona(3070, 315);
+
+        middle(3200, 250, 80, 20);
+        middle(3400, 310, 40, 15);
+        middle(3550, 400, 20, 7.5f);
+        bowl(3620, 500);
+
+
     }
 
     @Override
@@ -71,7 +148,7 @@ public class StateLevel extends StatePlay {
         }
 
         //Adding Player Death function here
-        if(player.getHealth() <= 0){
+        if(player.getHealth() <= 0 || player.getBounds().center.y < -1000){
             engine.switchState(new StateGameOver());
         }
 
