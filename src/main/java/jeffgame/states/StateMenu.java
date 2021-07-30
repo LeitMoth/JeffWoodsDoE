@@ -8,17 +8,16 @@ import jeffgame.sound.Music;
 import jeffgame.gfx.Shader;
 import jeffgame.gfx.Texture;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_C;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
+import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL33.*;
 
 public class StateMenu implements IGameState {
 
     Camera cam;
 
-    Sprite background, title;
+    Sprite background, title, title2;
     Shader menuShader;
-    Texture backTex, textTex;
+    Texture backTex, textTex, text2Tex;
     Music song = new Music("/sound/menu_theme.wav");
 
     @Override
@@ -33,12 +32,16 @@ public class StateMenu implements IGameState {
 
         backTex = ResourceStore.getTexture("/texture/menu_back.png");
         textTex = ResourceStore.getTexture("/texture/menu_text.png");
+        text2Tex = ResourceStore.getTexture("/texture/starttip.png");
 
         menuShader = ResourceStore.getShader("/shader/tex.vs.glsl", "/shader/tex.fs.glsl");
 
         background = new Sprite(cam.WIDTH,cam.HEIGHT, backTex, menuShader);
         title = new Sprite(cam.WIDTH*.95f,cam.HEIGHT*.2f, textTex, menuShader);
         title.getPosition().y += cam.HEIGHT/4;
+
+        title2 = new Sprite(cam.WIDTH*.9f, cam.HEIGHT*.2f, text2Tex, menuShader);
+        title2.getPosition().y -= cam.HEIGHT/5;
 
 //        musicHandler.PlayMusic("/sound/menu_theme.wav");
         song.play();
@@ -47,10 +50,10 @@ public class StateMenu implements IGameState {
     @Override
     public void update(JeffWoods engine) {
 
-        if(engine.getWindow().keyDown(GLFW_KEY_ENTER))
+        if(engine.getWindow().keyDown(GLFW_KEY_SPACE))
         {
             //This is how state switching should be done
-            engine.switchState(new StatePlay());
+            engine.switchState(new StateTut());
             return;
         }
 
@@ -66,12 +69,14 @@ public class StateMenu implements IGameState {
     public void render() {
         background.draw(cam);
         title.draw(cam);
+        title2.draw(cam);
     }
 
     @Override
     public void cleanup() {
         background.cleanup();
         title.cleanup();
+        title2.cleanup();
         song.stop();
     }
 
