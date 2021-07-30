@@ -31,20 +31,21 @@ public class Player extends SpriteEntity implements IPhysDyn, IInteractable {
                 ResourceStore.getShader("/shader/tex.vs.glsl", "/shader/tex.fs.glsl")
         );
         physHandler = new DynPhysHandler(bounds);
+
+        //Set health related values
         health = 10;
         hitCooldownStart = 30;
 
         //Setup attack hitbox
-        hit = new PlayerAttack(new Rectangle(new Vector2f(0,0),new Vector2f(20,5)));
         if(engine.state instanceof StatePlay)
         {
+            hit = new PlayerAttack(new Rectangle(new Vector2f(0,0), new Vector2f(20,5)));
             ((StatePlay) engine.state).gameObjects.add(hit);
+            hit.active = false;
         }
-        hit.active = false;
 
         //Go ahead and make sure it's in the store, so first jump doesn't slow down the game to look for it
         ResourceStore.getClip("/sound/jump.wav");
-
     }
 
     @Override
