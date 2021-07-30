@@ -3,9 +3,8 @@ package jeffgame.states;
 import jeffgame.JeffWoods;
 import jeffgame.ResourceStore;
 import jeffgame.gameobject.*;
+import jeffgame.phys.Rectangle;
 import jeffgame.sound.Music;
-import org.joml.Vector2f;
-
 import java.util.Random;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -14,7 +13,6 @@ public class StateBossFight extends StatePlay {
 
     Music song = new Music("/sound/final boss- corona.wav");
     private int timer = 0;
-    private final int bossSpawnTime = (int)(4.8*60);
 
     @Override
     public void init(JeffWoods engine) {
@@ -29,35 +27,29 @@ public class StateBossFight extends StatePlay {
 
         player = new Player(engine);
         //Give player extra health for the boss
-        player.damage(-5);
+        player.heal(5);
         gameObjects.add(player);
 
-        gameObjects.add(new Brick(30,30,150,-50));
-        gameObjects.add(new Brick(30,30,-150,-50));
-        gameObjects.add(new Brick(40,70,-250,-150));
-        gameObjects.add(new Brick(40,70,250,-150));
-        gameObjects.add(new Brick(40,470,300,-170));
-        gameObjects.add(new Brick(40,470,-300,-170));
-        gameObjects.add(new Brick(600,15,0,-170));
+        gameObjects.add(new Brick(new Rectangle(150,-50, 30/2.f,30/2.f)));
+        gameObjects.add(new Brick(new Rectangle(-150,-50, 30/2.f,30/2.f)));
+        gameObjects.add(new Brick(new Rectangle(-250,-150, 40/2.f,70/2.f)));
+        gameObjects.add(new Brick(new Rectangle(250,-150, 40/2.f,70/2.f)));
+        gameObjects.add(new Brick(new Rectangle(300,-170, 40/2.f,470/2.f)));
+        gameObjects.add(new Brick(new Rectangle(-300,-170, 40/2.f,470/2.f)));
+        gameObjects.add(new Brick(new Rectangle(0,-170, 600/2.f,15/2.f)));
 
-        gameObjects.add(new Brick(30,30,120,200));
-
-//        gameObjects.add(new Boss(new Vector2f(0,25550), new Vector2f(100,100),
-//                Boss.ID.values()[new Random().nextInt(Boss.ID.values().length)]));
-
-//        gameObjects.add(new Collectable(new Vector2f(160, 100), new Vector2f(20,50),
-//                ResourceStore.getTexture("/texture/health.png"),
-//                ResourceStore.getShader("/shader/tex.vs.glsl","/shader/tex.fs.glsl")));
     }
 
     @Override
     public void update(JeffWoods engine) {
         super.update(engine);
 
+        int bossSpawnTime = (int) (4.8 * 60);
         if(timer == bossSpawnTime)
         {
-            gameObjects.add(new Boss(new Vector2f(0,1000), new Vector2f(100,100),
-                    Boss.ID.values()[new Random().nextInt(Boss.ID.values().length)]));
+            gameObjects.add(new Boss(
+                    new Rectangle(0,1000,100/2.f,100/2.f),
+                    Boss.ID.values()[new Random(System.currentTimeMillis()).nextInt(Boss.ID.values().length)]));
         }
 
         int toDealWith = 0;

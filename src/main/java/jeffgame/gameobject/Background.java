@@ -5,6 +5,7 @@ import jeffgame.ResourceStore;
 import jeffgame.gfx.Camera;
 import jeffgame.gfx.Shader;
 import jeffgame.gfx.Texture;
+import jeffgame.phys.Rectangle;
 import org.joml.Vector2f;
 
 public class Background implements IGameObject{
@@ -15,7 +16,7 @@ public class Background implements IGameObject{
     {
         t.makeBackground();
         sprite = new Sprite(
-                2,2,
+                new Rectangle(0,0,1,1),
                 t,
                 ResourceStore.getShader("/shader/scroll_fill.vs.glsl", "/shader/tex.fs.glsl")
         );
@@ -37,9 +38,7 @@ public class Background implements IGameObject{
     }
 
     @Override
-    public void update(JeffWoods engine) {
-
-    }
+    public void update(JeffWoods engine) { }
 
     @Override
     public void cleanup() {

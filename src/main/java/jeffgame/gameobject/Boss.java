@@ -4,8 +4,7 @@ import jeffgame.JeffWoods;
 import jeffgame.ResourceStore;
 import jeffgame.gfx.Shader;
 import jeffgame.gfx.Texture;
-import jeffgame.phys.DynPhysHandler;
-import jeffgame.phys.IPhysDyn;
+import jeffgame.phys.Rectangle;
 import jeffgame.states.StatePlay;
 import org.joml.Vector2f;
 
@@ -35,16 +34,16 @@ public class Boss extends Enemy {
         };
     }
 
-    public Boss(Vector2f pos, Vector2f size, Texture t, Shader s) {
-        super(pos, size, t, s);
+    public Boss(Rectangle bounds, Texture t, Shader s) {
+        super(bounds, t, s);
         health = 25;
         attackDamage = 2;
     }
 
-    public Boss(Vector2f pos, Vector2f size, ID id)
+    public Boss(Rectangle bounds, ID id)
     {
         this(
-                pos, size,
+                bounds,
                 chooseTexture(id),
                 ResourceStore.getShader("/shader/tex.vs.glsl", "/shader/tex.fs.glsl")
         );

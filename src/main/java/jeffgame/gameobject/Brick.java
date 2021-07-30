@@ -5,30 +5,22 @@ import jeffgame.ResourceStore;
 import jeffgame.gfx.Camera;
 import jeffgame.phys.IPhysStatic;
 import jeffgame.phys.Rectangle;
-import org.joml.Vector2f;
 
 public class Brick implements IGameObject, IPhysStatic {
 
     protected Sprite sprite;
-    protected Rectangle bounds = new Rectangle();
 
-    public Brick(float width, float height, float x, float y) {
+    public Brick(Rectangle bounds) {
         sprite = new Sprite(
-                width, height,
-                width/50, height/50,
+                bounds,
+                bounds.halfSize.x*2/50, bounds.halfSize.y*2/50,
                 ResourceStore.getTexture("/texture/TempBrick.png"),
                 ResourceStore.getShader("/shader/tex.vs.glsl", "/shader/tex.fs.glsl"));
-
-        bounds.center = new Vector2f(x,y);
-        bounds.halfSize = new Vector2f(width,height).div(2);
-
-        //link, not copy
-        sprite.bounds = bounds;
     }
 
     @Override
     public Rectangle getRectangle() {
-        return this.bounds;
+        return this.sprite.bounds;
     }
 
     @Override
@@ -37,9 +29,7 @@ public class Brick implements IGameObject, IPhysStatic {
     }
 
     @Override
-    public void update(JeffWoods engine) {
-
-    }
+    public void update(JeffWoods engine) { }
 
     @Override
     public void cleanup() {

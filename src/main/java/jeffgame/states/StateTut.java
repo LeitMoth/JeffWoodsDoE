@@ -4,8 +4,7 @@ import jeffgame.JeffWoods;
 import jeffgame.ResourceStore;
 import jeffgame.gameobject.Sprite;
 import jeffgame.gfx.Camera;
-import jeffgame.gfx.Shader;
-import jeffgame.gfx.Texture;
+import jeffgame.phys.Rectangle;
 import jeffgame.sound.Music;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -15,8 +14,6 @@ public class StateTut implements IGameState {
     Camera cam;
 
     Sprite background;
-    Shader menuShader;
-    Texture backTex;
 
     Music m = new Music("/sound/inro.wav");
 
@@ -29,13 +26,13 @@ public class StateTut implements IGameState {
 
         cam = new Camera();
 
-        backTex = ResourceStore.getTexture("/texture/howtoplay.png");
+        background = new Sprite(
+                new Rectangle(0,0,cam.WIDTH/2,cam.HEIGHT/2),
+                ResourceStore.getTexture("/texture/howtoplay.png"),
+                ResourceStore.getShader("/shader/tex.vs.glsl", "/shader/tex.fs.glsl")
+        );
 
-        menuShader = ResourceStore.getShader("/shader/tex.vs.glsl", "/shader/tex.fs.glsl");
-
-        background = new Sprite(cam.WIDTH,cam.HEIGHT, backTex, menuShader);
-        m.play();
-
+        m.play(-4.7f);
     }
 
     @Override

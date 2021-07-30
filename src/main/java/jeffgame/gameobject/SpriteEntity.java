@@ -3,20 +3,15 @@ package jeffgame.gameobject;
 import jeffgame.gfx.Camera;
 import jeffgame.gfx.Shader;
 import jeffgame.gfx.Texture;
-import org.joml.Vector2f;
+import jeffgame.phys.Rectangle;
 
 public class SpriteEntity extends Entity {
 
     protected Sprite sprite;
 
-    public SpriteEntity(Vector2f pos, Vector2f size, Texture t, Shader s) {
-        bounds.center = pos;
-        size.div(2, bounds.halfSize);
-        sprite = new Sprite(size.x, size.y, t, s);
-
-        //Assign the REFERENCE here, don't copy the object, this is important
-        //We do this so the position will stay linked for easier rendering
-        sprite.bounds = this.bounds;
+    public SpriteEntity(Rectangle bounds, Texture t, Shader s) {
+        this.bounds = bounds;
+        sprite = new Sprite(bounds, t, s);
     }
 
     @Override

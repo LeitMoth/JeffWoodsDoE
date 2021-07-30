@@ -8,6 +8,7 @@ import jeffgame.phys.Rectangle;
 import jeffgame.sound.SoundHandler;
 import jeffgame.states.StateBossFight;
 import jeffgame.states.StateLevel;
+import jeffgame.states.StatePlay;
 import org.joml.Vector2f;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -15,17 +16,17 @@ import static org.lwjgl.glfw.GLFW.*;
 public class Player extends SpriteEntity implements IPhysDyn, IInteractable {
 
     private DynPhysHandler physHandler;
-    private int facing = 1;
     @Override
     public DynPhysHandler getHandler() {
         return physHandler;
     }
 
+    private int facing = 1;
     private PlayerAttack hit;
 
     public Player(JeffWoods engine) {
         super(
-                new Vector2f(0,0),new Vector2f(50,20),
+                new Rectangle(0,0,50/2.f,20/2.f),
                 ResourceStore.getTexture("/texture/Player.png"),
                 ResourceStore.getShader("/shader/tex.vs.glsl", "/shader/tex.fs.glsl")
         );
@@ -33,14 +34,11 @@ public class Player extends SpriteEntity implements IPhysDyn, IInteractable {
         health = 10;
         hitCooldownStart = 30;
 
+        //Setup attack hitbox
         hit = new PlayerAttack(new Rectangle(new Vector2f(0,0),new Vector2f(20,5)));
-        if(engine.state instanceof StateLevel)
+        if(engine.state instanceof StatePlay)
         {
-            ((StateLevel) engine.state).gameObjects.add(hit);
-        }
-        if(engine.state instanceof StateBossFight)
-        {
-            ((StateBossFight) engine.state).gameObjects.add(hit);
+            ((StatePlay) engine.state).gameObjects.add(hit);
         }
         hit.active = false;
 
@@ -87,7 +85,6 @@ public class Player extends SpriteEntity implements IPhysDyn, IInteractable {
 
         if(engine.getWindow().keyDown(GLFW_KEY_SPACE) && !physHandler.inAir)
         {
-//            soundEffectMan.PlaySoundEffect("/sound/jump.wav");
             SoundHandler.playSoundEffect("/sound/jump.wav");
             physHandler.getVelocity().y = 10.f;
         }

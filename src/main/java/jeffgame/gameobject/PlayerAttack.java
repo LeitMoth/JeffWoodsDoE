@@ -13,17 +13,17 @@ public class PlayerAttack extends HitBox {
 
     public PlayerAttack(Rectangle bounds) {
         super(bounds);
-        s = new Sprite(bounds.halfSize.x*2, bounds.halfSize.y*2,
+        s = new Sprite(
+                bounds,
                 ResourceStore.getTexture("/texture/health.png"),
                 ResourceStore.getShader("/shader/tex.vs.glsl","/shader/tex.fs.glsl"));
-        s.bounds = bounds;
     }
 
     @Override
     public void interact(IInteractable affected, JeffWoods engine) {
         if(active && affected instanceof Enemy)
         {
-            ((Enemy) affected).damage(1);
+            ((Enemy) affected).damage(damage);
         }
     }
 

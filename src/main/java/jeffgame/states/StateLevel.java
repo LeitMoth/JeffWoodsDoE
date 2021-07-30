@@ -3,6 +3,7 @@ package jeffgame.states;
 import jeffgame.gameobject.*;
 import jeffgame.JeffWoods;
 import jeffgame.ResourceStore;
+import jeffgame.phys.Rectangle;
 import jeffgame.sound.Music;
 import org.joml.Vector2f;
 
@@ -14,30 +15,24 @@ public class StateLevel extends StatePlay {
 
     Music song = new Music("/sound/level_theme.wav");
 
+    //Helper placement functions for level geometry
     public void middle(float x, float y, float w, float h)
     {
         corner_o(x - w/2,  y - h/2, w, h);
     }
-
-    public void rona(float x, float y)
-    {
-        gameObjects.add(new Enemy(new Vector2f(x,y), new Vector2f(30,30)));
+    public void rona(float x, float y) {
+        gameObjects.add(new Enemy(new Rectangle(x,y,30/2.f,30/2.f)));
     }
-
     public void corner_o(float x, float y, float w, float h)
     {
         corner(x,y,x+w,y+h);
     }
-
-    public void corner(float x, float y, float x2, float y2)
-    {
-        float w = x2 - x;
-        float h = y2 - y;
-        gameObjects.add(new Brick(w,h, x + w/2, y + h/2));
+    public void corner(float x, float y, float x2, float y2) {
+        float halfWidth = (x2 - x) / 2;
+        float halfHeight = (y2 - y) / 2;
+        gameObjects.add(new Brick(new Rectangle( x + halfWidth, y + halfHeight, halfWidth,halfHeight)));
     }
-
-    public void bowl(float x, float y)
-    {
+    public void bowl(float x, float y) {
         gameObjects.add(new Collectable(new Vector2f(x, y), new Vector2f(15,50),
                 ResourceStore.getTexture("/texture/health.png"),
                 ResourceStore.getShader("/shader/tex.vs.glsl","/shader/tex.fs.glsl")));
@@ -50,32 +45,11 @@ public class StateLevel extends StatePlay {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         camera.setDefaultZoom(0.3f);
-        song.play();
-
         gameObjects.add(new Background(ResourceStore.getTexture("/texture/city_background_night.png")));
 
         player = new Player(engine);
         player.getBounds().center.y = 40;
         gameObjects.add(player);
-
-//        gameObjects.add(new Brick(30,30,-80,60));
-//        gameObjects.add(new Brick(30,30,-150,-30));
-//
-//        gameObjects.add(new Brick(40,70,30,0));
-//
-//        gameObjects.add(new Brick(40,70,71,0));
-//        gameObjects.add(new Brick(40,70,30,-71));
-//        gameObjects.add(new Brick(40,70,71,-71));
-//
-//        gameObjects.add(new Brick(600,2,0,-100));
-//
-//        gameObjects.add(new Brick(30,30,120,100));
-//        gameObjects.add(new Brick(30,30,160,160));
-//        gameObjects.add(new Brick(30,30,60,200));
-
-//        gameObjects.add(new Enemy(new Vector2f(-80,110), new Vector2f(30,30)));
-//        gameObjects.add(new Enemy(new Vector2f(-50,40), new Vector2f(20,20)));
-
 
         corner(-200,-1000,1_000,0);
         corner(-1000,-1000,-200,1000);
@@ -125,7 +99,7 @@ public class StateLevel extends StatePlay {
         middle(3550, 400, 20, 7.5f);
         bowl(3620, 500);
 
-
+        song.play();
     }
 
     @Override

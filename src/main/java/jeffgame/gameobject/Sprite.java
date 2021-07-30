@@ -22,13 +22,13 @@ public class Sprite extends Mesh implements IGameObject {
         return shader;
     }
 
-    protected Rectangle bounds = new Rectangle();
+    protected Rectangle bounds;
 
     float[] positions = {
-            -0.5f,  0.5f,
-             0.5f,  0.5f,
-             0.5f, -0.5f,
-            -0.5f, -0.5f,
+            -1.0f,  1.0f,
+             1.0f,  1.0f,
+             1.0f, -1.0f,
+            -1.0f, -1.0f,
     };
     float[] texCoords = {
             0.0f, 0.0f,
@@ -40,27 +40,26 @@ public class Sprite extends Mesh implements IGameObject {
             0,1,2,
             2,3,0,
     };
-    public Sprite(float width, float height, jeffgame.gfx.Texture t, Shader s) {
-        this(width, height, 1, 1, t, s);
+
+    public Sprite(Rectangle bounds, Texture t, Shader s)
+    {
+        this(bounds, 1, 1, t, s);
     }
 
-    public Sprite(float width, float height, float texUScale, float texVScale, jeffgame.gfx.Texture t, Shader s) {
+    public Sprite(Rectangle bounds, float uScale, float vScale, Texture t, Shader s)
+    {
+        this.bounds = bounds;
         for(int i = 0; i < positions.length; )
         {
-            texCoords[i] *= texUScale;
-            positions[i++] *= width;
-            texCoords[i] *= texVScale;
-            positions[i++] *= height;
+            positions[i] *= this.bounds.halfSize.x;
+            texCoords[i++] *= uScale;
+            positions[i] *= this.bounds.halfSize.y;
+            texCoords[i++] *= vScale;
 
         }
         super.create(positions, texCoords, indices);
         texture = t;
         shader = s;
-
-        bounds.halfSize.x = width/2;
-        bounds.halfSize.y = height/2;
-        bounds.center.x = 0;
-        bounds.center.y = 0;
     }
 
     public Vector2f getPosition()

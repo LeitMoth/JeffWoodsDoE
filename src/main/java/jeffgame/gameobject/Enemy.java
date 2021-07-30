@@ -6,7 +6,7 @@ import jeffgame.gfx.Shader;
 import jeffgame.gfx.Texture;
 import jeffgame.phys.DynPhysHandler;
 import jeffgame.phys.IPhysDyn;
-import org.joml.Vector2f;
+import jeffgame.phys.Rectangle;
 
 public class Enemy extends SpriteEntity implements IPhysDyn, IInteractable {
 
@@ -18,16 +18,16 @@ public class Enemy extends SpriteEntity implements IPhysDyn, IInteractable {
 
     public int attackDamage = 1;
 
-    public Enemy(Vector2f pos, Vector2f size, Texture t, Shader s) {
-        super(pos, size, t, s);
-        physHandler = new DynPhysHandler(bounds);
+    public Enemy(Rectangle bounds, Texture t, Shader s) {
+        super(bounds, t, s);
+        physHandler = new DynPhysHandler(this.bounds);
         health = 4;
     }
 
-    public Enemy(Vector2f pos, Vector2f size)
+    public Enemy(Rectangle bounds)
     {
         this(
-                pos, size,
+                bounds,
                 ResourceStore.getTexture("/texture/FinalBoss.png"),
                 ResourceStore.getShader("/shader/tex.vs.glsl", "/shader/tex.fs.glsl")
         );

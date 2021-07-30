@@ -33,6 +33,11 @@ public class Entity implements IGameObject {
         }
     }
 
+    public void heal(int health)
+    {
+        this.health += health;
+    }
+
     @Override
     public void draw(Camera c) {
 

@@ -4,6 +4,7 @@ import jeffgame.JeffWoods;
 import jeffgame.ResourceStore;
 import jeffgame.gameobject.Sprite;
 import jeffgame.gfx.Camera;
+import jeffgame.phys.Rectangle;
 import jeffgame.sound.Music;
 import jeffgame.gfx.Shader;
 import jeffgame.gfx.Texture;
@@ -35,11 +36,11 @@ public class StateMenu implements IGameState {
 
         menuShader = ResourceStore.getShader("/shader/tex.vs.glsl", "/shader/tex.fs.glsl");
 
-        background = new Sprite(cam.WIDTH,cam.HEIGHT, backTex, menuShader);
-        title = new Sprite(cam.WIDTH*.95f,cam.HEIGHT*.2f, textTex, menuShader);
+        background = new Sprite(new Rectangle(0,0,cam.WIDTH/2,cam.HEIGHT/2), backTex, menuShader);
+        title = new Sprite(new Rectangle(0,0,cam.WIDTH*.95f/2,cam.HEIGHT*.2f/2), textTex, menuShader);
         title.getPosition().y += cam.HEIGHT/4;
 
-        title2 = new Sprite(cam.WIDTH*.9f, cam.HEIGHT*.2f, text2Tex, menuShader);
+        title2 = new Sprite(new Rectangle(0,0,cam.WIDTH*.9f/2, cam.HEIGHT*.2f/2), text2Tex, menuShader);
         title2.getPosition().y -= cam.HEIGHT/5;
 
         song.play();

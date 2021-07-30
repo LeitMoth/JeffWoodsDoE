@@ -5,6 +5,7 @@ import jeffgame.gfx.Shader;
 import jeffgame.gfx.Texture;
 import jeffgame.phys.DynPhysHandler;
 import jeffgame.phys.IPhysDyn;
+import jeffgame.phys.Rectangle;
 import org.joml.Vector2f;
 
 public class Collectable extends Sprite implements IPhysDyn, IInteractable {
@@ -18,9 +19,8 @@ public class Collectable extends Sprite implements IPhysDyn, IInteractable {
     public String name = "Peggy1";
 
     public Collectable(Vector2f pos, Vector2f size, Texture t, Shader s) {
-        super(size.x, size.y, t, s);
+        super(new Rectangle(new Vector2f(pos), new Vector2f(size).div(2)), t, s);
         physHandler = new DynPhysHandler(bounds,false);
-        bounds.center = pos;
     }
 
     @Override

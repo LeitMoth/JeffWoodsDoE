@@ -12,15 +12,21 @@ public class Music {
     {
         clip = ResourceStore.getClip(filepath);
         clip.loop(Clip.LOOP_CONTINUOUSLY);
-        FloatControl gainControl =
-                (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-        gainControl.setValue(-10.0f); // Reduce volume by X decibels.
     }
 
     public void play(){
+        play(-10.0f);
+    }
+
+    public void play(float volume)
+    {
+        FloatControl gainControl =
+                (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        gainControl.setValue(volume); // Reduce volume by X decibels.
         clip.setFramePosition(0);
         clip.start();
     }
+
     public void stop(){
         clip.stop();
     }

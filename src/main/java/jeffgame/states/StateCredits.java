@@ -6,6 +6,7 @@ import jeffgame.gameobject.Sprite;
 import jeffgame.gfx.Camera;
 import jeffgame.gfx.Shader;
 import jeffgame.gfx.Texture;
+import jeffgame.phys.Rectangle;
 import jeffgame.sound.Music;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
@@ -32,9 +33,8 @@ public class StateCredits implements IGameState {
 
         menuShader = ResourceStore.getShader("/shader/tex.vs.glsl", "/shader/tex.fs.glsl");
 
-        background = new Sprite(cam.WIDTH,cam.HEIGHT, backTex, menuShader);
+        background = new Sprite(new Rectangle(0,0,cam.WIDTH/2,cam.HEIGHT/2), backTex, menuShader);
 
-//        musicHandler.PlayMusic("/sound/level_theme.wav");
         song.play();
     }
 

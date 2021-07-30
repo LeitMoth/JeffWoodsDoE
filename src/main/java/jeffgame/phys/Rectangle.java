@@ -11,6 +11,11 @@ public class Rectangle {
         halfSize = h;
     }
 
+    public Rectangle(float x, float y, float halfWidth, float halfHeight)
+    {
+        this(new Vector2f(x,y), new Vector2f(halfWidth, halfHeight));
+    }
+
     public Rectangle() {
         center = new Vector2f();
         halfSize = new Vector2f();

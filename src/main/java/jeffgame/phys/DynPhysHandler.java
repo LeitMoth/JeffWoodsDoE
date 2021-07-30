@@ -7,7 +7,6 @@ public class DynPhysHandler {
     /*should be temp*/
     public boolean enableGravity = true;
 
-
     public boolean staticCollidable = true;
 
     private Rectangle bounds;

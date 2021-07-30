@@ -6,6 +6,7 @@ import jeffgame.gameobject.Sprite;
 import jeffgame.gfx.Camera;
 import jeffgame.gfx.Shader;
 import jeffgame.gfx.Texture;
+import jeffgame.phys.Rectangle;
 import jeffgame.sound.Music;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -35,13 +36,12 @@ public class StateGameOver implements IGameState {
 
         menuShader = ResourceStore.getShader("/shader/tex.vs.glsl", "/shader/tex.fs.glsl");
 
-        background = new Sprite(cam.WIDTH,cam.HEIGHT, backTex, menuShader);
-        title = new Sprite(cam.WIDTH*.95f,cam.HEIGHT*.2f, textTex, menuShader);
+        background = new Sprite(new Rectangle(0,0,cam.WIDTH/2,cam.HEIGHT/2), backTex, menuShader);
+        title = new Sprite(new Rectangle(0,0,cam.WIDTH*.95f/2,cam.HEIGHT*.2f/2), textTex, menuShader);
         title.getPosition().y -= cam.HEIGHT/24;
-        restart = new Sprite(cam.WIDTH*.50f,cam.HEIGHT*.2f, restartTex, menuShader);
+        restart = new Sprite(new Rectangle(0,0,cam.WIDTH*.50f/2,cam.HEIGHT*.2f/2), restartTex, menuShader);
         restart.getPosition().y += cam.HEIGHT/3;
 
-//        musicHandler.PlayMusic("/sound/Game_Over.wav");
         song.play();
     }
 
