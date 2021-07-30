@@ -104,7 +104,7 @@ public class StatePlay implements IGameState {
         }
         if(toDealWith == 0)
         {
-            engine.switchState(new StateCredits());
+            engine.switchState(new StateBossFight());
             return;
         }
 

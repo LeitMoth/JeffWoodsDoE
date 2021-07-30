@@ -3,6 +3,7 @@ package jeffgame.gameobject;
 import jeffgame.JeffWoods;
 import jeffgame.gfx.Camera;
 import jeffgame.phys.Rectangle;
+import jeffgame.states.StateBossFight;
 import jeffgame.states.StatePlay;
 
 public class Entity implements IGameObject {
@@ -42,10 +43,14 @@ public class Entity implements IGameObject {
     public void update(JeffWoods engine) {
         hitCooldown--;
 
-        if(health <= 0 && engine.state instanceof StatePlay)
+        if(health <= 0)
         {
             cleanup();
-            ((StatePlay) engine.state).queueRemoveGameObject(this);
+            //TODO: make a 2DPlatform gameState that statePlay and stateBoss both extend from to resolve this garbage
+            if(engine.state instanceof StatePlay)
+                ((StatePlay) engine.state).queueRemoveGameObject(this);
+            if(engine.state instanceof StateBossFight)
+                ((StateBossFight) engine.state).queueRemoveGameObject(this);
         }
     }
 

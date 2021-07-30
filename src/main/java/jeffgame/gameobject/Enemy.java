@@ -16,6 +16,8 @@ public class Enemy extends SpriteEntity implements IPhysDyn, IInteractable {
         return physHandler;
     }
 
+    public int attackDamage = 1;
+
     public Enemy(Vector2f pos, Vector2f size, Texture t, Shader s) {
         super(pos, size, t, s);
         physHandler = new DynPhysHandler(bounds);
@@ -42,7 +44,7 @@ public class Enemy extends SpriteEntity implements IPhysDyn, IInteractable {
     public void interact(IInteractable affected, JeffWoods engine) {
         if(affected instanceof Player)
         {
-            ((Player) affected).damage(1);
+            ((Player) affected).damage(attackDamage);
         }
     }
 }

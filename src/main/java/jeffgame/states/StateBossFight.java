@@ -4,7 +4,6 @@ import jeffgame.JeffWoods;
 import jeffgame.ResourceStore;
 import jeffgame.gameobject.*;
 import jeffgame.gfx.Camera;
-import jeffgame.handlers.BossHandler;
 import jeffgame.phys.IPhysDyn;
 import jeffgame.phys.IPhysStatic;
 import jeffgame.sound.Music;
@@ -15,7 +14,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
 import static org.lwjgl.opengl.GL11.*;
 
 public class StateBossFight implements IGameState {
@@ -42,8 +40,8 @@ public class StateBossFight implements IGameState {
 
         localBossID = StatePlay.bossID;
 
-        BossHandler handler = new BossHandler();
-        handler.BossGenerate(localBossID);
+//        BossHandler handler = new BossHandler();
+//        handler.BossGenerate(localBossID);
 
         camera.setDefaultZoom(0.3f);
 //        musicHandler.PlayMusic("/sound/level_theme.wav");
@@ -88,8 +86,7 @@ public class StateBossFight implements IGameState {
 
         gameObjects.add(new Brick(30,30,120,200));
 
-
-
+        gameObjects.add(new Boss(new Vector2f(0,100), new Vector2f(100,100), Boss.ID.Boss1));
 
         gameObjects.add(new Collectable(new Vector2f(160, 100), new Vector2f(20,50),
                 ResourceStore.getTexture("/texture/health.png"),
@@ -102,9 +99,13 @@ public class StateBossFight implements IGameState {
         for(IGameObject gameObject : gameObjects)
         {
             gameObject.update(engine);
+            if(gameObject instanceof Boss) toDealWith++;
+        }
 
-
-
+        if(toDealWith == 0)
+        {
+            engine.switchState(new StateCredits());
+            return;
         }
 
 
@@ -169,12 +170,10 @@ public class StateBossFight implements IGameState {
         }
 
         // Imma just reuse the code for the Credits to make a boss timer
-       final int PLAY_TIME = 120; //seconds
-        if (++playTimer > PLAY_TIME*60) {
-            engine.switchState(new StateGameOver());
-        }
-
-
+//       final int PLAY_TIME = 120; //seconds
+//        if (++playTimer > PLAY_TIME*60) {
+//            engine.switchState(new StateGameOver());
+//        }
 
         //MUST NOT MODIFY GAMEOBJECTS PAST THIS POINT
         for(IGameObject g : toRemove)
@@ -182,7 +181,6 @@ public class StateBossFight implements IGameState {
             gameObjects.remove(g);
         }
         toRemove.clear();
-
     }
 
     @Override
