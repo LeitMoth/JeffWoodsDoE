@@ -7,7 +7,7 @@ import jeffgame.phys.IPhysDyn;
 import jeffgame.phys.Rectangle;
 import jeffgame.sound.SoundHandler;
 import jeffgame.states.StateBossFight;
-import jeffgame.states.StatePlay;
+import jeffgame.states.StateLevel;
 import org.joml.Vector2f;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -34,9 +34,9 @@ public class Player extends SpriteEntity implements IPhysDyn, IInteractable {
         hitCooldownStart = 30;
 
         hit = new PlayerAttack(new Rectangle(new Vector2f(0,0),new Vector2f(20,5)));
-        if(engine.state instanceof StatePlay)
+        if(engine.state instanceof StateLevel)
         {
-            ((StatePlay) engine.state).gameObjects.add(hit);
+            ((StateLevel) engine.state).gameObjects.add(hit);
         }
         if(engine.state instanceof StateBossFight)
         {
@@ -115,11 +115,11 @@ public class Player extends SpriteEntity implements IPhysDyn, IInteractable {
 
     @Override
     public void interact(IInteractable affected, JeffWoods engine) {
-        if(affected instanceof Collectable && engine.state instanceof StatePlay)
+        if(affected instanceof Collectable && engine.state instanceof StateLevel)
         {
             System.out.println("Picked up collectable: " + ((Collectable) affected).name);
             ((Collectable) affected).cleanup();
-            ((StatePlay)engine.state).gameObjects.remove(affected);
+            ((StateLevel)engine.state).gameObjects.remove(affected);
         }
 
         if(affected instanceof Collectable && engine.state instanceof StateBossFight)

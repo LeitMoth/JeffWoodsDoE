@@ -23,7 +23,6 @@ public class StateMenu implements IGameState {
     @Override
     public void init(JeffWoods engine) {
 
-
         glDisable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -43,7 +42,6 @@ public class StateMenu implements IGameState {
         title2 = new Sprite(cam.WIDTH*.9f, cam.HEIGHT*.2f, text2Tex, menuShader);
         title2.getPosition().y -= cam.HEIGHT/5;
 
-//        musicHandler.PlayMusic("/sound/menu_theme.wav");
         song.play();
     }
 

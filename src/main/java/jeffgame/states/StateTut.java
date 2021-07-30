@@ -44,7 +44,7 @@ public class StateTut implements IGameState {
         if(engine.getWindow().keyDown(GLFW_KEY_ENTER))
         {
             //This is how state switching should be done
-            engine.switchState(new StatePlay());
+            engine.switchState(new StateLevel());
             return;
         }
     }

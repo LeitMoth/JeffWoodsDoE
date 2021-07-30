@@ -1,111 +1,37 @@
 package jeffgame.states;
 
+import jeffgame.JeffWoods;
 import jeffgame.gameobject.*;
+import jeffgame.gfx.Camera;
 import jeffgame.phys.IPhysDyn;
 import jeffgame.phys.IPhysStatic;
-import jeffgame.JeffWoods;
-import jeffgame.ResourceStore;
-import jeffgame.gfx.Camera;
-import jeffgame.sound.Music;
-import org.joml.Vector2f;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
-import static org.lwjgl.opengl.GL11.*;
-
 public class StatePlay implements IGameState {
 
-    public static int bossID = 0;
-
+    public Player player = null;
     public ArrayList<IGameObject> gameObjects = new ArrayList<>();
     public ArrayList<IGameObject> toRemove = new ArrayList<>();
+
+    public Camera camera = new Camera();
 
     public void queueRemoveGameObject(IGameObject gameObject) {
         toRemove.add(gameObject);
     }
 
-    public Camera camera = new Camera();
-
-    public Player player = null;
-
-    Music song = new Music("/sound/level_theme.wav");
-
-    private int playTimer = 0;
-
     @Override
     public void init(JeffWoods engine) {
-
-        camera.setDefaultZoom(0.3f);
-//        musicHandler.PlayMusic("/sound/level_theme.wav");
-        song.play();
-        glDisable(GL_DEPTH_TEST);
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-
-//        gameObjects = new ArrayList<>();
-
-
-        gameObjects.add(new Background(ResourceStore.getTexture("/texture/city_background_night.png")));
-
-        player = new Player(engine);
-        gameObjects.add(player);
-
-//        Sprite boss =
-//                new Sprite(
-//                        30,30,
-//                        ResourceStore.getTexture("/texture/FinalBoss.png"),
-//                        ResourceStore.getShader("/shader/tex.vs.glsl", "/shader/tex.fs.glsl")
-//                );
-//
-//        boss.getPosition().add(-40,60);
-//        gameObjects.add(boss);
-
-        gameObjects.add(new Brick(30,30,-80,60));
-        gameObjects.add(new Brick(30,30,-150,-30));
-
-        gameObjects.add(new Brick(40,70,30,0));
-
-        gameObjects.add(new Brick(40,70,71,0));
-        gameObjects.add(new Brick(40,70,30,-71));
-        gameObjects.add(new Brick(40,70,71,-71));
-
-        gameObjects.add(new Brick(600,2,0,-100));
-
-        gameObjects.add(new Brick(30,30,120,100));
-        gameObjects.add(new Brick(30,30,160,160));
-        gameObjects.add(new Brick(30,30,60,200));
-
-        gameObjects.add(new Enemy(new Vector2f(-80,110), new Vector2f(30,30)));
-        gameObjects.add(new Enemy(new Vector2f(-50,40), new Vector2f(20,20)));
-
-        gameObjects.add(new Collectable(new Vector2f(160, 100), new Vector2f(20,50),
-                ResourceStore.getTexture("/texture/health.png"),
-                ResourceStore.getShader("/shader/tex.vs.glsl","/shader/tex.fs.glsl")));
     }
 
     @Override
     public void update(JeffWoods engine) {
-        int toDealWith = 0;
         for(IGameObject gameObject : gameObjects)
         {
             gameObject.update(engine);
-
-            //victory check
-            if(gameObject instanceof Enemy || gameObject instanceof Collectable)
-            {
-                toDealWith++;
-            }
-        }
-        if(toDealWith == 0)
-        {
-            engine.switchState(new StateBossFight());
-            return;
         }
 
         /*
@@ -163,34 +89,12 @@ public class StatePlay implements IGameState {
 
         camera.update(engine);
 
-        //Adding Player Death function here
-        if(player.getHealth() <= 0){
-            engine.switchState(new StateGameOver());
-        }
-
-        // Testing Credits
-//        final int PLAY_TIME = 60; //seconds
-//        if (++playTimer > PLAY_TIME*60) {
-//            engine.switchState(new StateCredits());
-//        }
-
-        if(engine.getWindow().keyDown(GLFW_KEY_R))
-        {
-            engine.switchState(new StatePlay());
-        }
-
-        if(engine.getWindow().keyDown(GLFW_KEY_S)){
-
-            engine.switchState(new StateBossFight());
-        }
-
         //MUST NOT MODIFY GAMEOBJECTS PAST THIS POINT
         for(IGameObject g : toRemove)
         {
             gameObjects.remove(g);
         }
         toRemove.clear();
-
     }
 
     @Override
@@ -207,7 +111,6 @@ public class StatePlay implements IGameState {
         {
             object.cleanup();
         }
-        song.stop();
     }
 
 }

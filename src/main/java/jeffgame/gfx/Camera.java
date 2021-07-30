@@ -1,8 +1,7 @@
 package jeffgame.gfx;
 
 import jeffgame.JeffWoods;
-import jeffgame.states.StateBossFight;
-import jeffgame.states.StatePlay;
+import jeffgame.states.StateLevel;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 
@@ -72,9 +71,9 @@ public class Camera {
 
         if(!window.keyDown(GLFW_KEY_TAB))
         {
-            if(engine.state instanceof StatePlay)
+            if(engine.state instanceof StateLevel)
             {
-                pos = new Vector2f(( (StatePlay) engine.state).player.getBounds().center);
+                pos = new Vector2f(( (StateLevel) engine.state).player.getBounds().center);
             }
         }
         else {
